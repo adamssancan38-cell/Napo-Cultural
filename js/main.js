@@ -72,7 +72,7 @@ const observadorContador = new IntersectionObserver((entradas)=>{
 observadorContador.observe(document.querySelector('.dato-destacado'));
 
 /* ======================================================
-   MAPA INTERACTIVO DE NAPO (Leaflet)
+   MAPA DE NAPO (Google Maps)
    ====================================================== */
 const infoCantones = {
   tena:{ nombre:"Tena", color:"#d62828",
@@ -97,47 +97,107 @@ function mostrarInfoCanton(id){
   panelTitulo.style.color = data.color;
   panelTexto.textContent = data.texto;
   document.getElementById('panel-canton').style.borderLeftColor = data.color;
+  actualizarMapa(id);
 }
 
-let mapaNapo;
-window.addEventListener('load', ()=>{
-  mapaNapo = L.map('mapa-napo', {scrollWheelZoom:false}).setView([-0.75,-77.75], 9);
-  // CARTO (datos de OpenStreetMap): funciona también al abrir el archivo desde el disco,
-  // a diferencia de tile.openstreetmap.org, que bloquea las páginas sin Referer (error 403).
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains:'abcd', maxZoom:14
-  }).addTo(mapaNapo);
+/* ---- Google Maps ----
+   Modo 1 (por defecto, sin clave): mapa incrustado de Google Maps. Se puede acercar, alejar y explorar;
+   al elegir un cantón se muestra su marcador y se actualizan los enlaces "Abrir" y "Cómo llegar".
+   Modo 2 (opcional): si js/config.js contiene una clave de Maps JavaScript API, se muestran los
+   cinco marcadores a la vez. Si la clave falla, vuelve solo al Modo 1. */
+const MAPA_PROVINCIA = { q:'Provincia de Napo, Ecuador', z:8 };
+const ubicacionesMapa = {
+  tena:      { q:'Tena, Napo, Ecuador',                          coords:[-0.9936,-77.8156], z:13 },
+  archidona: { q:'Archidona, Napo, Ecuador',                     coords:[-0.9203,-77.8014], z:13 },
+  arosemena: { q:'Carlos Julio Arosemena Tola, Napo, Ecuador',   coords:[-1.0500,-77.8700], z:13 },
+  elchaco:   { q:'El Chaco, Napo, Ecuador',                      coords:[-0.3167,-77.8167], z:13 },
+  quijos:    { q:'Baeza, Quijos, Napo, Ecuador',                 coords:[-0.4667,-77.8833], z:13 }
+};
+const contornoNapo = [
+  [0.15,-77.95],[-0.05,-77.55],[-0.35,-77.35],[-0.75,-77.3],
+  [-1.3,-77.55],[-1.35,-78.05],[-0.85,-78.15],[-0.35,-78.15],[0.15,-77.95]
+];
+const mapaIframe = document.getElementById('mapa-iframe');
+const mapaApiDiv = document.getElementById('mapa-api');
+const enlaceAbrir = document.getElementById('mapa-abrir');
+const enlaceRuta  = document.getElementById('mapa-ruta');
+let mapaGoogle = null, marcadoresGoogle = {}, ventanaInfo = null;
 
-  // Contorno esquemático y referencial de la provincia de Napo
-  const contornoNapo = [
-    [0.15,-77.95],[-0.05,-77.55],[-0.35,-77.35],[-0.75,-77.3],
-    [-1.3,-77.55],[-1.35,-78.05],[-0.85,-78.15],[-0.35,-78.15],[0.15,-77.95]
-  ];
-  L.polygon(contornoNapo, {color:'#1b4332', weight:2, dashArray:'6,6', fillOpacity:.05})
-    .addTo(mapaNapo).bindPopup('Límite referencial y esquemático de la provincia de Napo');
+function urlEmbed(q, z){ return 'https://www.google.com/maps?q=' + encodeURIComponent(q) + '&hl=es&z=' + z + '&output=embed'; }
+function urlAbrir(q){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
+function urlRuta(q){ return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(q); }
 
-  const puntos = {
-    tena:[-0.9936,-77.8156],
-    archidona:[-0.9203,-77.8014],
-    arosemena:[-1.1500,-77.9500],
-    elchaco:[-0.3167,-77.8167],
-    quijos:[-0.4667,-77.8833]
-  };
+function actualizarEnlaces(q){
+  if(enlaceAbrir) enlaceAbrir.href = urlAbrir(q);
+  if(enlaceRuta)  enlaceRuta.href  = urlRuta(q);
+}
 
-  Object.keys(puntos).forEach(id=>{
-    const data = infoCantones[id];
-    const marcador = L.circleMarker(puntos[id], {
-      radius: id==='tena' ? 12 : 9,
-      fillColor: data.color,
-      color:'#fff',
-      weight:2,
-      fillOpacity:0.95
-    }).addTo(mapaNapo);
-    marcador.bindTooltip(data.nombre, {permanent:false});
-    marcador.on('click', ()=> mostrarInfoCanton(id));
+function actualizarMapa(id){
+  const u = ubicacionesMapa[id]; if(!u) return;
+  actualizarEnlaces(u.q);
+  if(mapaGoogle){
+    mapaGoogle.panTo({lat:u.coords[0], lng:u.coords[1]}); mapaGoogle.setZoom(12);
+    const m = marcadoresGoogle[id];
+    if(m && ventanaInfo){
+      ventanaInfo.setContent('<strong>' + infoCantones[id].nombre + '</strong><br><a href="' + urlAbrir(u.q) + '" target="_blank" rel="noopener">Abrir en Google Maps</a> · <a href="' + urlRuta(u.q) + '" target="_blank" rel="noopener">Cómo llegar</a>');
+      ventanaInfo.open({map:mapaGoogle, anchor:m});
+    }
+  } else if(mapaIframe){
+    mapaIframe.src = urlEmbed(u.q, u.z);
+  }
+}
+
+function verProvincia(){
+  actualizarEnlaces(MAPA_PROVINCIA.q);
+  if(mapaGoogle){ mapaGoogle.panTo({lat:-0.75,lng:-77.75}); mapaGoogle.setZoom(9); if(ventanaInfo) ventanaInfo.close(); }
+  else if(mapaIframe){ mapaIframe.src = urlEmbed(MAPA_PROVINCIA.q, MAPA_PROVINCIA.z); }
+  panelTitulo.textContent = 'Selecciona un cantón';
+  panelTitulo.style.color = '';
+  panelTexto.textContent = 'Haz clic sobre un punto del mapa o en la leyenda para conocer más información de cada cantón de la provincia de Napo.';
+  document.getElementById('panel-canton').style.borderLeftColor = '';
+}
+document.getElementById('mapa-provincia').addEventListener('click', verProvincia);
+
+function volverAlMapaIncrustado(){
+  mapaGoogle = null; marcadoresGoogle = {};
+  if(mapaApiDiv) mapaApiDiv.hidden = true;
+  if(mapaIframe) mapaIframe.style.display = '';
+}
+window.gm_authFailure = volverAlMapaIncrustado;   // clave inválida o con restricciones: se usa el mapa incrustado
+
+function iniciarMapaGoogleAvanzado(){
+  mapaGoogle = new google.maps.Map(mapaApiDiv, {
+    center:{lat:-0.75,lng:-77.75}, zoom:9, gestureHandling:'cooperative',
+    mapTypeControl:true, streetViewControl:false, fullscreenControl:true
   });
-});
+  new google.maps.Polygon({
+    paths: contornoNapo.map(p=>({lat:p[0], lng:p[1]})), map:mapaGoogle,
+    strokeColor:'#1b4332', strokeOpacity:.9, strokeWeight:2, fillColor:'#2d6a4f', fillOpacity:.05, clickable:false
+  });
+  ventanaInfo = new google.maps.InfoWindow();
+  Object.keys(ubicacionesMapa).forEach(id=>{
+    const u = ubicacionesMapa[id], data = infoCantones[id];
+    const m = new google.maps.Marker({
+      position:{lat:u.coords[0], lng:u.coords[1]}, map:mapaGoogle, title:data.nombre,
+      icon:{ path:google.maps.SymbolPath.CIRCLE, scale: id==='tena' ? 12 : 9, fillColor:data.color,
+             fillOpacity:.95, strokeColor:'#ffffff', strokeWeight:2 }
+    });
+    m.addListener('click', ()=> mostrarInfoCanton(id));
+    marcadoresGoogle[id] = m;
+  });
+  mapaApiDiv.hidden = false;
+  if(mapaIframe) mapaIframe.style.display = 'none';
+}
+
+(function cargarMapaAvanzadoSiHayClave(){
+  const clave = window.NAPO_CONFIG && window.NAPO_CONFIG.GOOGLE_MAPS_API_KEY;
+  if(!clave) return;                                   // sin clave: se queda el mapa incrustado
+  window.__napoMapaListo = iniciarMapaGoogleAvanzado;
+  const s = document.createElement('script');
+  s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(clave) + '&callback=__napoMapaListo&language=es&region=EC';
+  s.async = true; s.onerror = volverAlMapaIncrustado;
+  document.head.appendChild(s);
+})();
 
 document.querySelectorAll('.leyenda-cantones li').forEach(li=>{
   li.addEventListener('click', ()=> mostrarInfoCanton(li.dataset.canton));
@@ -197,16 +257,16 @@ const platosNapo = [
   { id:'maito', titulo:'Maito de pescado', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Maito%20de%20tilapia%20%28gastronom%C3%ADa%20Ecuatoriana%29.jpg?width=900',
     ingredientes:'Ingredientes: pescado de río (tilapia o bocachico), hoja de bijao, sal y hierbas amazónicas.',
     historia:'El pescado se envuelve en hoja de bijao y se cocina al calor directo de la brasa o la ceniza, una técnica ancestral que conserva el sabor y la humedad del alimento sin necesidad de utensilios metálicos.' },
-  { id:'chontacuro', titulo:'Chontacuro', img:'img/chontacuro.jpg',
+  { id:'chontacuro', titulo:'Chontacuro', img:'img/chontacuro.svg',
     ingredientes:'Ingredientes: larva del escarabajo de la palma de chonta, sal al gusto.',
     historia:'Es una larva rica en proteínas y vitaminas, tradicionalmente asada en brocheta sobre brasas. Representa un alimento ancestral de alto valor nutricional dentro de la dieta kichwa amazónica.' },
-  { id:'caldo', titulo:'Caldo de gallina criolla', img:'img/caldo-gallina.jpg',
+  { id:'caldo', titulo:'Caldo de gallina criolla', img:'img/caldo-gallina.svg',
     ingredientes:'Ingredientes: gallina criolla, yuca, zanahoria, cebolla y hierbas aromáticas locales.',
     historia:'Plato de preparación cotidiana y festiva en las comunidades de Napo, elaborado con ingredientes propios de la chacra amazónica y aves criadas de forma tradicional.' },
   { id:'maytu', titulo:'Maytu de pescado', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Maito%20de%20tilapia%20%28gastronom%C3%ADa%20Ecuatoriana%29.jpg?width=900',
     ingredientes:'Ingredientes: pescado de río, hoja de bijao, condimentos naturales de la zona.',
     historia:'Es un plato de carácter ceremonial, preparado especialmente durante la Fiesta de la Chonta, donde se comparte en comunidad como parte de los rituales de agradecimiento a la naturaleza.' },
-  { id:'uchumanga', titulo:'Uchumanga', img:'img/uchumanga.jpg',
+  { id:'uchumanga', titulo:'Uchumanga', img:'img/uchumanga.svg',
     ingredientes:'Ingredientes: ají amazónico, hongos del bosque, palmito y carnes de monte o pescado.',
     historia:'Salsa picante tradicional que acompaña pescados, carnes de monte, hongos y palmito, aportando el característico sabor picante de la gastronomía kichwa amazónica.' }
 ];
@@ -249,6 +309,9 @@ document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') modalGastro.c
 document.addEventListener('error', (e)=>{
   const img = e.target;
   if(!(img instanceof HTMLImageElement) || img.dataset.fallback) return;
+  if(img.dataset.fallbackSrc && !img.dataset.fallbackTried){      // 1.º intento: imagen local de respaldo
+    img.dataset.fallbackTried = '1'; img.src = img.dataset.fallbackSrc; return;
+  }
   img.dataset.fallback = '1';
   const txt = (img.alt || 'Imagen pendiente').replace(/&/g,'&amp;').replace(/</g,'&lt;').slice(0,60);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d6a4f"/><stop offset="1" stop-color="#bc6c25"/></linearGradient></defs><rect width="800" height="500" fill="url(#g)"/><text x="400" y="230" font-size="64" text-anchor="middle">🌿</text><text x="400" y="300" font-size="24" fill="#fff" text-anchor="middle" font-family="sans-serif">${txt}</text><text x="400" y="340" font-size="18" fill="#ffe8c2" text-anchor="middle" font-family="sans-serif">Imagen pendiente</text></svg>`;

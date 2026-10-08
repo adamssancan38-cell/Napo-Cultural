@@ -11,13 +11,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 
-<!-- Leaflet (mapa interactivo) -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <!-- Tailwind (utilidades puntuales) -->
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="img/logo-napo.svg">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
 <!-- ============ NAVEGACIÓN ============ -->
 <header id="nav-principal">
   <div class="nav-inner">
-    <a href="#inicio" class="logo-napo"><span class="icono">🌿</span> Napo Cultural</a>
+    <a href="#inicio" class="logo-napo"><img class="logo-napo-img" src="img/logo-napo.svg" alt="Logotipo de Napo Cultural" width="46" height="46"> Napo Cultural</a>
     <button id="btn-hamburguesa" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
     <nav id="menu-links" aria-label="Navegación principal">
       <a href="#inicio">Inicio</a>
@@ -111,7 +111,10 @@
     <!-- MAPA -->
     <div class="mapa-wrapper">
       <div class="reveal">
-        <div id="mapa-napo" role="application" aria-label="Mapa interactivo de los cantones de la provincia de Napo"></div>
+        <div id="mapa-napo" role="region" aria-label="Mapa de Google Maps de los cantones de la provincia de Napo">
+          <iframe id="mapa-iframe" title="Google Maps: provincia de Napo, Ecuador" src="https://www.google.com/maps?q=Provincia+de+Napo,+Ecuador&amp;hl=es&amp;z=8&amp;output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div id="mapa-api" class="mapa-api" hidden></div>
+        </div>
         <ul class="leyenda-cantones">
           <li data-canton="tena" tabindex="0"><span class="punto-color" style="background:#d62828;"></span> Tena (capital)</li>
           <li data-canton="archidona" tabindex="0"><span class="punto-color" style="background:#e76f51;"></span> Archidona</li>
@@ -124,6 +127,11 @@
         <h3 id="panel-canton-titulo">Selecciona un cantón</h3>
         <p id="panel-canton-texto">Haz clic sobre un punto del mapa o en la leyenda para conocer más información
         de cada cantón de la provincia de Napo.</p>
+        <div class="mapa-acciones">
+          <a id="mapa-abrir" class="btn-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Provincia+de+Napo%2C+Ecuador" target="_blank" rel="noopener">📍 Abrir en Google Maps</a>
+          <a id="mapa-ruta" class="btn-mapa btn-mapa-sec" href="https://www.google.com/maps/dir/?api=1&amp;destination=Tena%2C+Napo%2C+Ecuador" target="_blank" rel="noopener">🧭 Cómo llegar</a>
+          <button type="button" id="mapa-provincia" class="btn-mapa btn-mapa-sec">Ver toda la provincia</button>
+        </div>
       </div>
     </div>
 
@@ -191,7 +199,7 @@
     </div>
 
     <div class="tab-panel" id="tab-patrimonio">
-      <img src="img/museo-arosemena.jpg" alt="Museo arqueológico comunitario con petroglifos en Carlos Julio Arosemena Tola">
+      <img src="img/museo-arosemena.svg" alt="Museo arqueológico comunitario con petroglifos en Carlos Julio Arosemena Tola">
       <div>
         <h3>Juegos, danza, medicina y arqueología</h3>
         <p>El patrimonio cultural de Napo incluye juegos tradicionales y danzas ceremoniales, así como una rica
@@ -234,7 +242,7 @@
         </div>
       </div>
       <div class="tarjeta reveal">
-        <img src="img/kichwa-sierra.jpg" alt="Comunidad Kichwa de la sierra en Papallacta, Tambo y Oyacachi">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mujeres%20Kichwas.jpg?width=900" data-fallback-src="img/kichwa-sierra.jpg" alt="Comunidad Kichwa de la sierra en Papallacta, Tambo y Oyacachi" loading="lazy">
         <div class="cuerpo">
           <span class="etiqueta-mini">Pueblo andino-amazónico</span>
           <h3>Kichwa de la sierra</h3>
@@ -593,6 +601,7 @@
 
 <button id="btn-arriba" aria-label="Volver arriba">↑</button>
 
+<script src="js/config.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

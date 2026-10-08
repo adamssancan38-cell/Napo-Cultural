@@ -78,6 +78,8 @@
     font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.3rem;
   }
   .logo-napo span.icono{font-size:1.6rem;}
+  .logo-napo-img{width:46px;height:46px;flex:none;border-radius:50%;object-fit:cover;}
+  @media (max-width:600px){.logo-napo-img{width:38px;height:38px;}}
   nav#menu-links{display:flex;gap:1.1rem;flex-wrap:wrap;}
   nav#menu-links a{
     color:#f1faee;font-weight:700;font-size:.88rem;padding:.4rem .5rem;border-radius:6px;
@@ -171,6 +173,17 @@
   .mapa-wrapper{display:grid;grid-template-columns:1.5fr 1fr;gap:1.6rem;margin-top:2.5rem;align-items:start;}
   @media (max-width:880px){.mapa-wrapper{grid-template-columns:1fr;}}
   #mapa-napo{height:440px;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18);border:4px solid #fff;}
+  #mapa-napo iframe, #mapa-napo .mapa-api{width:100%;height:100%;border:0;display:block;}
+  #mapa-napo .mapa-api[hidden]{display:none;}
+  @media (max-width:600px){#mapa-napo{height:340px;}}
+  .mapa-acciones{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem;}
+  .btn-mapa{
+    display:inline-block;background:var(--terracota);color:#fff;border:none;padding:.55rem 1.1rem;border-radius:999px;
+    font:700 .85rem 'Nunito',sans-serif;cursor:pointer;transition:.25s;
+  }
+  .btn-mapa:hover{background:var(--naranja);}
+  .btn-mapa-sec{background:var(--verde-medio);}
+  .btn-mapa-sec:hover{background:var(--verde-selva);}
   .panel-canton{
     background:#fff;border-radius:16px;padding:1.5rem;min-height:300px;box-shadow:0 8px 20px rgba(27,67,50,.1);
     border-left:6px solid var(--verde-medio);

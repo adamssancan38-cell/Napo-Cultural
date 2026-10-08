@@ -4,17 +4,31 @@ napo-cultural-heritage-portal/
 ├── index.html        (estructura de la página)
 ├── css/styles.css    (estilos)
 ├── js/main.js        (mapa, línea de tiempo, gastronomía, quiz, etc.)
-├── img/              (infografia-napo.jpeg y las fotos que agreguen)
+├── js/config.js      (clave opcional de Google Maps; vacía por defecto)
+├── img/              (infografía, logos y las ilustraciones/fotos de cada sección)
 ├── video/napo.mp4    (video del grupo)
 └── flashcards.csv    (tarjetas del quiz)
 
-CÓMO VERLO (importante para que carguen los videos de YouTube)
-YouTube NO se reproduce si abres index.html con doble clic (file://).
+CÓMO VERLO (importante para que carguen los videos de YouTube y el mapa)
+YouTube y Google Maps NO cargan si abres index.html con doble clic (file://).
 Opción 1 (local): ejecuta ./iniciar.sh (o, en una terminal en esta carpeta:
     python3 -m http.server 8000 )
   y entra a http://localhost:8000
-Opción 2: súbelo a un hosting gratis (GitHub Pages, Netlify) y ahí funciona todo.
+Opción 2: súbelo a un hosting gratis (GitHub Pages, Netlify, Vercel) y ahí funciona todo.
 
-IMÁGENES: las fotos de Wikimedia Commons cargan por internet. Las que dicen
-"Imagen pendiente" se reemplazan guardando la foto en img/ y cambiando el
-nombre en index.html (ej. img/alfareria-tena.jpg).
+IMÁGENES
+- img/ ya incluye todas las imágenes que antes faltaban (alfarería, fiestas, instrumentos, platos, etc.).
+  Son recortes/ilustraciones de la infografía del grupo y dibujos en el mismo estilo.
+- Para usar una foto real: guárdala en img/ con el mismo nombre (o cambia el nombre en index.html / js/main.js).
+- Las fotos de Wikimedia Commons cargan por internet; si una falla se muestra la imagen local de respaldo.
+
+GOOGLE MAPS
+- Por defecto usa el mapa incrustado de Google Maps: no necesita clave. Se puede acercar, alejar y explorar;
+  al elegir un cantón (leyenda o panel) se centra en él y se actualizan "Abrir en Google Maps" y "Cómo llegar".
+- Opcional (los 5 marcadores a la vez sobre el mapa):
+  1) En Google Cloud Console crea un proyecto y activa "Maps JavaScript API".
+  2) Crea una clave de API (Credenciales) y restríngela: "Referencias HTTP" con tu dominio
+     (por ejemplo https://napo-cultural-unemi.vercel.app/* y http://localhost:8000/*) y solo a "Maps JavaScript API".
+  3) Pégala en js/config.js (GOOGLE_MAPS_API_KEY). En un sitio estático la clave siempre es visible
+     en el navegador: por eso la restricción por dominio es obligatoria. No uses una clave sin restricciones.
+  Si la clave falla, el sitio vuelve solo al mapa incrustado.
