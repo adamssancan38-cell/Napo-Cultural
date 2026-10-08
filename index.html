@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Napo Cultural | Patrimonio Vivo de la Amazonía Ecuatoriana</title>
+<meta name="description" content="Portal Cultural Digital sobre la provincia de Napo, Ecuador. Historia, arte, gastronomía, música y tradiciones de la Amazonía.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+<!-- Leaflet (mapa interactivo) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Tailwind (utilidades puntuales) -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="barra-progreso"></div>
+
+<!-- ============ NAVEGACIÓN ============ -->
+<header id="nav-principal">
+  <div class="nav-inner">
+    <a href="#inicio" class="logo-napo"><span class="icono">🌿</span> Napo Cultural</a>
+    <button id="btn-hamburguesa" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+    <nav id="menu-links" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#infografia">Infografía</a>
+      <a href="#provincia">La Provincia</a>
+      <a href="#arte">Arte y Patrimonio</a>
+      <a href="#cultura">Cultura</a>
+      <a href="#gastronomia">Gastronomía</a>
+      <a href="#musica">Música</a>
+      <a href="#multimedia">Multimedia</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#conclusiones">Conclusiones</a>
+      <a href="#referencias">Referencias</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 0. HERO ============ -->
+<section id="inicio">
+  <div class="hero-contenido">
+    <span class="hero-etiqueta">Patrimonio Cultural Digital del Ecuador</span>
+    <h1>Napo: Riqueza Cultural y <span class="resalte">Patrimonio Vivo</span> de la Amazonía</h1>
+    <p class="subtitulo">"Napo, todo tan cerca"</p>
+    <a href="#provincia" class="btn-cta">🌱 Explorar el portal</a>
+    <div class="dato-destacado">
+      <span id="contador-indigena">0%</span>
+      <small>de la población de Napo se autoidentifica como indígena, en su mayoría Kichwa amazónica.</small>
+    </div>
+  </div>
+</section>
+<div class="patron-kichwa"></div>
+
+
+<!-- ============ INFOGRAFÍA ============ -->
+<section id="infografia">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Napo en una imagen</span>
+      <h2>Riqueza cultural y patrimonio vivo</h2>
+      <p>Resumen visual de la identidad, tradiciones, gastronomía y música de la provincia de Napo.</p>
+    </div>
+    <figure class="infografia reveal">
+      <a href="img/infografia-napo.jpeg" target="_blank" rel="noopener">
+        <img src="img/infografia-napo.jpeg" alt="Infografía: Napo, riqueza cultural y patrimonio vivo de la Amazonía. 56,75% de población indígena, alfarería, fiestas de la Chonta y Kuya Raymi, maito, chontacuro y música Naporuna." loading="lazy">
+      </a>
+      <figcaption>Infografía elaborada por el grupo. Haz clic para verla en tamaño completo.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 1. PRESENTACIÓN DE LA PROVINCIA ============ -->
+<section id="provincia" class="fondo-tejido">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Conoce Napo</span>
+      <h2>El corazón de la Amazonía ecuatoriana</h2>
+      <p>Napo es una de las provincias amazónicas con mayor biodiversidad y riqueza cultural ancestral del Ecuador,
+      hogar del pueblo Kichwa amazónico y de otras nacionalidades que han habitado su territorio por generaciones.
+      Sin embargo, enfrenta riesgos importantes: la pérdida progresiva de la lengua kichwa y de saberes
+      tradicionales, así como una escasa visibilización de sus bienes patrimoniales en el Sistema de Información
+      del Patrimonio Cultural del Ecuador (SIPCE). Este portal digital busca difundir, valorar y contribuir a la
+      salvaguardia de ese patrimonio vivo.</p>
+    </div>
+
+    <div class="grid-datos">
+      <div class="tarjeta-dato reveal"><div class="icono">🏛️</div><h3>Capital</h3><p>Tena</p></div>
+      <div class="tarjeta-dato reveal"><div class="icono">🧭</div><h3>Región</h3><p>Amazónica (Oriente ecuatoriano)</p></div>
+      <div class="tarjeta-dato reveal"><div class="icono">🗺️</div><h3>Cantones</h3><p>Tena, Archidona, El Chaco, Quijos y Carlos Julio Arosemena Tola</p></div>
+      <div class="tarjeta-dato reveal"><div class="icono">🌦️</div><h3>Clima</h3><p>Tropical húmedo, propio de la selva amazónica</p></div>
+      <div class="tarjeta-dato reveal"><div class="icono">⛏️</div><h3>Recursos</h3><p>Agricultura, petróleo, oro de lavado, madera y turismo comunitario</p></div>
+      <div class="tarjeta-dato reveal"><div class="icono">🌳</div><h3>Riqueza natural</h3><p>Alta biodiversidad y amplias zonas de bosque primario</p></div>
+    </div>
+
+    <div class="reveal" style="margin-top:3rem;max-width:820px;">
+      <h3 style="color:var(--verde-selva);">Ubicación</h3>
+      <p style="color:#444;line-height:1.7;">Napo es considerada la puerta de entrada a la Amazonía ecuatoriana.
+      Limita con las provincias de Sucumbíos y Orellana al norte y oriente, Pastaza al sur, la República del Perú
+      al este, y Pichincha, Cotopaxi y Tungurahua al occidente, en la transición entre la Sierra y el Oriente.</p>
+    </div>
+
+    <!-- MAPA -->
+    <div class="mapa-wrapper">
+      <div class="reveal">
+        <div id="mapa-napo" role="application" aria-label="Mapa interactivo de los cantones de la provincia de Napo"></div>
+        <ul class="leyenda-cantones">
+          <li data-canton="tena" tabindex="0"><span class="punto-color" style="background:#d62828;"></span> Tena (capital)</li>
+          <li data-canton="archidona" tabindex="0"><span class="punto-color" style="background:#e76f51;"></span> Archidona</li>
+          <li data-canton="arosemena" tabindex="0"><span class="punto-color" style="background:#2d6a4f;"></span> C. J. Arosemena Tola</li>
+          <li data-canton="elchaco" tabindex="0"><span class="punto-color" style="background:#48cae4;"></span> El Chaco</li>
+          <li data-canton="quijos" tabindex="0"><span class="punto-color" style="background:#e9c46a;"></span> Quijos</li>
+        </ul>
+      </div>
+      <div class="panel-canton reveal" id="panel-canton">
+        <h3 id="panel-canton-titulo">Selecciona un cantón</h3>
+        <p id="panel-canton-texto">Haz clic sobre un punto del mapa o en la leyenda para conocer más información
+        de cada cantón de la provincia de Napo.</p>
+      </div>
+    </div>
+
+    <!-- HISTORIA -->
+    <div class="reveal" style="margin-top:4rem;">
+      <h3 style="color:var(--verde-selva);text-align:center;font-size:1.7rem;">Línea de tiempo histórica</h3>
+      <p style="text-align:center;color:#555;max-width:700px;margin:.6rem auto 0;">Haz clic en cada evento para
+      conocer más detalles.</p>
+      <div class="linea-tiempo" id="linea-tiempo"></div>
+    </div>
+  </div>
+</section>
+<div class="patron-kichwa fino"></div>
+
+<!-- ============ 2. ARTE Y PATRIMONIO ============ -->
+<section id="arte">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Expresiones ancestrales</span>
+      <h2>Arte y Patrimonio de Napo</h2>
+      <p>La creatividad del pueblo Kichwa amazónico y de las demás nacionalidades de Napo se expresa en su
+      artesanía, arquitectura, literatura oral y patrimonio cultural, reflejando su profunda relación con la selva.</p>
+    </div>
+
+    <div class="tabs-botones reveal">
+      <button class="tab-btn activo" data-tab="artesania">Arte y Artesanía</button>
+      <button class="tab-btn" data-tab="arquitectura">Arquitectura</button>
+      <button class="tab-btn" data-tab="literatura">Literatura</button>
+      <button class="tab-btn" data-tab="patrimonio">Patrimonio Cultural</button>
+    </div>
+
+    <div class="tab-panel activo" id="tab-artesania">
+      <img src="img/alfareria-tena.jpg" alt="Artesana kichwa elaborando alfarería tradicional de forma manual en Tena">
+      <div>
+        <h3>Alfarería, cestería y tejidos</h3>
+        <p>La alfarería tradicional de Tena y Archidona fue declarada <strong>Patrimonio Cultural Inmaterial del
+        Ecuador en 2022</strong>. Las mujeres kichwas elaboran mucahuas, tinajas y ollas de cerámica utilitaria y
+        ritual, usadas en ceremonias como la Fiesta de la Chonta. A esto se suma la cestería elaborada con fibras
+        del bosque, los tejidos en chambira y algodón, y la talla en madera de balsa y chonta, técnicas que reflejan
+        la cosmovisión kichwa y su estrecha relación con la naturaleza.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-arquitectura">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Interior%20traditional%20house%2C%20Ahuano%2C%20Ecuador%20%282009%29.jpg?width=900" alt="Vivienda tradicional amazónica construida con materiales del bosque">
+      <div>
+        <h3>De la vivienda ancestral a la ciudad amazónica</h3>
+        <p>La arquitectura tradicional utiliza materiales del bosque (madera, hoja de palma y bijao) y privilegia
+        la ventilación natural frente al clima tropical húmedo. Durante la Colonia, ciudades como Baeza y Archidona
+        se organizaron en un trazado en damero con plaza central, siguiendo el modelo español. Hoy, Tena y
+        Archidona combinan edificaciones modernas con un entorno amazónico que aún conserva viviendas de influencia
+        tradicional.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-literatura">
+      <img src="img/literatura-oral.jpg" alt="Mujer kichwa adulta mayor narrando historias orales en Misahuallí">
+      <div>
+        <h3>La palabra que se transmite de generación en generación</h3>
+        <p>La literatura kichwa de Napo es fundamentalmente oral: mitos, leyendas, cantos y poesía que explican el
+        origen del mundo, la selva y sus espíritus protectores. Una expresión destacada es el <strong>Festival de
+        Mujeres Adultas Mayores Kichwas Versiadoras</strong>, realizado en la parroquia de Misahuallí, donde se
+        preservan y comparten los versos y cantos tradicionales transmitidos por las abuelas kichwas.</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-patrimonio">
+      <img src="img/museo-arosemena.jpg" alt="Museo arqueológico comunitario con petroglifos en Carlos Julio Arosemena Tola">
+      <div>
+        <h3>Juegos, danza, medicina y arqueología</h3>
+        <p>El patrimonio cultural de Napo incluye juegos tradicionales y danzas ceremoniales, así como una rica
+        medicina ancestral basada en el uso de plantas del bosque. En el cantón Carlos Julio Arosemena Tola
+        funciona un <strong>museo arqueológico comunitario</strong> que resguarda una colección de piedritas
+        grabadas (petroglifos) y cuenta con un jardín botánico, un referente para la investigación y la
+        valoración del pasado prehispánico de la región.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. CULTURA ============ -->
+<section id="cultura" class="fondo-tejido" style="background:#f3ece0;">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Pueblos, lenguas y tradiciones</span>
+      <h2>La Cultura de Napo</h2>
+      <p>Napo es un territorio pluricultural y multiétnico donde conviven distintos pueblos y nacionalidades,
+      cada uno con su propia lengua, cosmovisión y tradiciones.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="tarjeta reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Local%20residents%20of%20Ahuano%2C%20Ecuador%201%20%282009%29.jpg?width=900" alt="Comunidad del pueblo Kichwa amazónico en Napo">
+        <div class="cuerpo">
+          <span class="etiqueta-mini">Mayoría poblacional</span>
+          <h3>Kichwa amazónico</h3>
+          <p>Es la nacionalidad más numerosa de la provincia, presente principalmente en Archidona, Tena y
+          Carlos Julio Arosemena Tola. Su lengua e identidad son el eje central de la cultura napense.</p>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abuela%20y%20nieta%20%28cultura%20Waorani%29.jpg?width=900" alt="Miembros de la nacionalidad Waorani en las comunidades de Gareno y Meñepare">
+        <div class="cuerpo">
+          <span class="etiqueta-mini">Pueblo amazónico</span>
+          <h3>Waorani</h3>
+          <p>Habitan las comunidades de Gareno y Meñepare, dentro del cantón Tena, manteniendo su propia lengua y
+          tradiciones de cacería y vida en el bosque.</p>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/kichwa-sierra.jpg" alt="Comunidad Kichwa de la sierra en Papallacta, Tambo y Oyacachi">
+        <div class="cuerpo">
+          <span class="etiqueta-mini">Pueblo andino-amazónico</span>
+          <h3>Kichwa de la sierra</h3>
+          <p>Asentados en Papallactas, Tambos y Oyacachis, en los cantones de Quijos y El Chaco, zona de transición
+          entre la Sierra y la Amazonía.</p>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/pueblos-minoritarios.jpg" alt="Representación de los pueblos Andoas, Shiwiar, Zápara y Secoya en Napo">
+        <div class="cuerpo">
+          <span class="etiqueta-mini">Presencia minoritaria</span>
+          <h3>Andoas, Shiwiar, Zápara y Secoya</h3>
+          <p>Pequeños grupos poblacionales presentes en la provincia, que enriquecen aún más la diversidad
+          étnica y lingüística de Napo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center;margin-top:3rem;">
+      <h3 style="color:var(--verde-selva);">Lenguas de Napo</h3>
+      <p style="color:#555;max-width:650px;margin:0 auto;">En la provincia conviven tres lenguas: el
+      <strong>español</strong>, el <strong>kichwa</strong> y el <strong>waorani</strong>, siendo el kichwa la
+      lengua indígena predominante dada la alta población de esta nacionalidad (56,75% de población indígena).</p>
+    </div>
+
+    <h3 class="reveal" style="color:var(--verde-selva);text-align:center;margin-top:3.5rem;">Tradiciones y fiestas</h3>
+    <div class="grid-3">
+      <div class="tarjeta reveal">
+        <img src="img/fiesta-chonta.jpg" alt="Fiesta de la Chonta celebrada en Archidona">
+        <div class="cuerpo"><h3>Fiesta de la Chonta</h3>
+        <p>Celebrada en Archidona, honra el fruto de la chonta con danzas, bebidas tradicionales como la chicha y
+        platos ceremoniales como el maytu de pescado.</p></div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/kuya-raymi.jpg" alt="Celebración del Kuya Raymi en la comunidad de Talag, junio">
+        <div class="cuerpo"><h3>Kuya Raymi</h3>
+        <p>Fiesta realizada en junio en la comunidad de Talag, vinculada a los ciclos agrícolas y a la fertilidad
+        de la tierra.</p></div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/guayusa-warmi.jpg" alt="Celebración de Guayusa Warmi en Tena, 15 de noviembre">
+        <div class="cuerpo"><h3>Guayusa Warmi</h3>
+        <p>Se celebra en Tena cada 15 de noviembre, en honor a la mujer kichwa y a la guayusa, planta sagrada
+        consumida en las madrugadas amazónicas.</p></div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/boda-kichwa.jpg" alt="Ceremonia de boda kichwa tradicional con danzas y tambor">
+        <div class="cuerpo"><h3>Boda Kichwa</h3>
+        <p>Ceremonia tradicional que incluye actividades de cacería y pesca previas, además de danzas y música de
+        tambor como parte de la celebración comunitaria.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. GASTRONOMÍA ============ -->
+<section id="gastronomia">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Sabores de la selva</span>
+      <h2>Gastronomía de Napo</h2>
+      <p>La cocina napense se basa en los productos del bosque, el río y la chacra, y conserva técnicas de
+      cocción ancestrales como la cocción en hoja de bijao.</p>
+    </div>
+    <div class="grid-3" id="grid-gastronomia"></div>
+  </div>
+</section>
+<div class="modal-fondo" id="modal-gastronomia">
+  <div class="modal-caja">
+    <button class="modal-cerrar" id="cerrar-modal-gastro" aria-label="Cerrar">✕</button>
+    <img id="modal-gastro-img" src="" alt="">
+    <h3 id="modal-gastro-titulo"></h3>
+    <p id="modal-gastro-ingredientes" style="color:#555;"></p>
+    <p id="modal-gastro-historia" style="color:#555;"></p>
+  </div>
+</div>
+
+<!-- ============ 5. MÚSICA ============ -->
+<section id="musica" class="fondo-tejido" style="background:#eef2e4;">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Sonidos de la Amazonía</span>
+      <h2>Música de Napo</h2>
+      <p>La música tradicional Naporuna es ritual y simbólica: sus letras evocan las fuerzas de la naturaleza y
+      acompañan momentos clave de la vida comunitaria, como bodas, pedidas de mano, fiestas de compadres y
+      celebraciones de los vara yocs (autoridades tradicionales).</p>
+    </div>
+
+    <h3 class="reveal" style="text-align:center;color:var(--verde-selva);">Instrumentos tradicionales</h3>
+    <div class="grid-3">
+      <div class="tarjeta reveal">
+        <img src="img/tambor.jpg" alt="Tambor tradicional kichwa utilizado en ceremonias de Napo">
+        <div class="cuerpo"><h3>Tambor</h3><p>Marca el ritmo en ceremonias, bodas y fiestas comunitarias, siendo
+        uno de los instrumentos más representativos de la música Naporuna.</p></div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/violin.jpg" alt="Violín tradicional usado en la música kichwa amazónica">
+        <div class="cuerpo"><h3>Violín</h3><p>Incorporado tras el contacto con la cultura mestiza, acompaña
+        melodías festivas en celebraciones y encuentros comunitarios.</p></div>
+      </div>
+      <div class="tarjeta reveal">
+        <img src="img/pingullo.jpg" alt="Pingullo, flauta tradicional andino-amazónica">
+        <div class="cuerpo"><h3>Pingullo</h3><p>Flauta tradicional de sonido agudo, utilizada junto al tambor
+        para acompañar danzas rituales y festividades.</p></div>
+      </div>
+    </div>
+
+    <h3 class="reveal" style="text-align:center;color:var(--verde-selva);margin-top:3.5rem;">Artistas y agrupaciones</h3>
+    <div class="grid-3">
+      <div class="tarjeta reveal">
+        <div class="cuerpo">
+          <h3>Chicos del Barrio</h3>
+          <p>Agrupación de cumbia kichwa con un repertorio de 25 canciones que fusionan ritmos tropicales con
+          identidad amazónica.</p>
+          <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/HOM6wEB4K5U" title="Ñuka Warmishitalla (video oficial) — Chicos del Barrio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><a class="yt-link" href="https://www.youtube.com/watch?v=HOM6wEB4K5U" target="_blank" rel="noopener">▶ Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <div class="cuerpo">
+          <h3>Huatusa Loca</h3>
+          <p>Nombre artístico de Pedro Kléber Huatatoca Tapuy, artista activo desde 1992, referente de la música
+          popular kichwa en Napo.</p>
+          <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/Nn1G4S4E24s" title="Tuna Malta Huarmi (video oficial 2020) — Huatusa Loca" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><a class="yt-link" href="https://www.youtube.com/watch?v=Nn1G4S4E24s" target="_blank" rel="noopener">▶ Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <div class="cuerpo">
+          <h3>Tushuy Taqui Sacha Manda</h3>
+          <p>Grupo de danza y música tradicional activo desde 2009, dedicado a preservar y difundir las
+          expresiones escénicas kichwas de la selva.</p>
+          <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/0BhKsoJC8gE" title="Tushuy Taqui Sacha Manda — danza de la selva" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><a class="yt-link" href="https://www.youtube.com/watch?v=0BhKsoJC8gE" target="_blank" rel="noopener">▶ Ver en YouTube</a>
+        </div>
+      </div>
+      <div class="tarjeta reveal">
+        <div class="cuerpo">
+          <h3>Mishki</h3>
+          <p>Nombre artístico de Carlos Alvarado, exponente del estilo "Runa Paju" o "Magia Runa", que fusiona
+          música ancestral kichwa con sonoridades contemporáneas.</p>
+          <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/9lRBceXkTRI" title="Sanguru Tullo — Mishki Chullumbu y Los Yumbos Chaguamangos" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><a class="yt-link" href="https://www.youtube.com/watch?v=9lRBceXkTRI" target="_blank" rel="noopener">▶ Ver en YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. MULTIMEDIA ============ -->
+<section id="multimedia">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Napo en movimiento</span>
+      <h2>Video del patrimonio de Napo</h2>
+      <p>Un recorrido audiovisual por los paisajes, la gente y las tradiciones de la provincia de Napo.</p>
+    </div>
+    <div class="video-wrapper reveal">
+      <video id="video-napo" controls preload="metadata" aria-label="Video del grupo sobre la cultura de Napo">
+        <source src="video/napo.mp4" type="video/mp4">
+        Tu navegador no soporta la reproducción de video.
+      </video>
+    </div>
+    <p id="mensaje-video">🎬 No se encontró el video. Verifica que exista el archivo <code>video/napo.mp4</code>.</p>
+
+    <h3 class="reveal" style="text-align:center;color:var(--verde-selva);margin-top:3rem;">Más videos sobre Napo</h3>
+    <div class="grid-videos">
+      <div class="item reveal"><h4>Fiesta de la Chonta</h4><small>Festival folklórico en Archidona</small>
+        <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/sUY2lDtDNTE" title="Festival folklórico de la chonta en Archidona" loading="lazy" allowfullscreen></iframe></div>
+        <a class="yt-link" href="https://www.youtube.com/watch?v=sUY2lDtDNTE" target="_blank" rel="noopener">▶ Ver en YouTube</a></div>
+      <div class="item reveal"><h4>Cultura, vestimenta y gastronomía</h4><small>Archidona, Napo</small>
+        <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/FZkuEPSUNqk" title="Turismo, vestimenta y gastronomía de Archidona" loading="lazy" allowfullscreen></iframe></div>
+        <a class="yt-link" href="https://www.youtube.com/watch?v=FZkuEPSUNqk" target="_blank" rel="noopener">▶ Ver en YouTube</a></div>
+      <div class="item reveal"><h4>Danza kichwa Curi Muyu</h4><small>Archidona, Napo</small>
+        <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/8jN4KvTKKwA" title="Danza Kichwa Curi Muyu, Archidona" loading="lazy" allowfullscreen></iframe></div>
+        <a class="yt-link" href="https://www.youtube.com/watch?v=8jN4KvTKKwA" target="_blank" rel="noopener">▶ Ver en YouTube</a></div>
+      <div class="item reveal"><h4>Entrevista a Mishky Chullumbu</h4><small>Música y memoria Napo Runa</small>
+        <div class="yt-wrap"><iframe src="https://www.youtube-nocookie.com/embed/1Ooh1zD3_no" title="Entrevista a Mishky Chullumbu" loading="lazy" allowfullscreen></iframe></div>
+        <a class="yt-link" href="https://www.youtube.com/watch?v=1Ooh1zD3_no" target="_blank" rel="noopener">▶ Ver en YouTube</a></div>
+    </div>
+
+    <h3 class="reveal" style="text-align:center;color:var(--verde-selva);margin-top:3rem;">Galería: paisajes de Napo</h3>
+    <div class="galeria">
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Volc%C3%A1n%20Sumaco%202015-06-14%20%281%29%20%2840391577161%29.jpg?width=700" alt="Volcán Sumaco, provincia de Napo" loading="lazy"><figcaption>Volcán Sumaco</figcaption></figure>
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Waterfall%20on%20Rio%20Hollin%202015-06-13%20%281%29%20%2840391481191%29.jpg?width=700" alt="Cascada en el río Hollín" loading="lazy"><figcaption>Cascada en el río Hollín</figcaption></figure>
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/R%C3%ADo%20Misahuall%C3%AD%20en%20Archidona.JPG?width=700" alt="Río Misahuallí en Archidona" loading="lazy"><figcaption>Río Misahuallí en Archidona</figcaption></figure>
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Puerto%20Misahuall%C3%AD%20%28Tena%29.jpg?width=700" alt="Puerto Misahuallí, Tena" loading="lazy"><figcaption>Puerto Misahuallí</figcaption></figure>
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Iglesia%20de%20Archidona.jpg?width=700" alt="Iglesia de Archidona" loading="lazy"><figcaption>Iglesia de Archidona</figcaption></figure>
+      <figure class="reveal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tena%20de%20noche.jpg?width=700" alt="Ciudad de Tena de noche" loading="lazy"><figcaption>Tena de noche</figcaption></figure>
+    </div>
+    <p style="text-align:center;font-size:.8rem;color:#666;margin-top:.8rem;">Fotografías de Wikimedia Commons (licencias libres). Autores y licencias en «Créditos» al final.</p>
+  </div>
+</section>
+
+<!-- ============ 7. MINIJUEGO: PRUEBA TU CONOCIMIENTO ============ -->
+<section id="quiz" class="nq">
+
+<div class="nq-head">
+  <h2>Zona de juego: ¿cuánto sabes de Napo?</h2>
+  <p>Practica lo aprendido con tarjetas de estudio. Voltea la tarjeta, comprueba tu respuesta y suma puntos.</p>
+</div>
+
+<div class="nq-hud">
+  <div class="nq-pill" id="nq-points">⭐ Puntos: <span id="nq-points-n">0</span></div>
+  <div class="nq-pill" id="nq-streak">🔥 Racha: <span id="nq-streak-n">0</span></div>
+  <div class="nq-pill">🏆 Mejor: <span id="nq-best">0</span></div>
+</div>
+
+<div class="nq-stage" id="nq-stage" tabindex="0" aria-label="Tarjetas de estudio sobre Napo">
+  <div class="nq-toast" id="nq-toast">¡Racha x3! +5</div>
+
+  <div id="nq-game">
+    <div class="nq-wrap" id="nq-wrap">
+      <button class="nq-menu-btn" id="nq-menu-btn" aria-label="Opciones" title="Opciones">⋮</button>
+      <div class="nq-menu" id="nq-menu">
+        <button data-act="shuffle">🔀 Mezclar</button>
+        <button data-act="restart">↺ Reiniciar</button>
+        <button data-act="review">📝 Repasar solo las falladas</button>
+      </div>
+      <div class="nq-card" id="nq-card">
+        <div class="nq-face nq-front">
+          <span class="nq-count" id="nq-count">1/58</span>
+          <div class="nq-text" id="nq-q"></div>
+          <span class="nq-hint">Ver respuesta</span>
+        </div>
+        <div class="nq-face nq-back">
+          <span class="nq-count" id="nq-count2">1/58</span>
+          <div class="nq-text" id="nq-a"></div>
+          <span class="nq-hint">Ver pregunta</span>
+        </div>
+      </div>
+      <div class="nq-verdict" id="nq-verdict"></div>
+    </div>
+
+    <div class="nq-controls">
+      <button class="nq-btn nq-arrow" id="nq-prev" aria-label="Tarjeta anterior">←</button>
+      <button class="nq-btn nq-bad-btn" id="nq-bad" aria-label="No la sabía">✕ <b id="nq-bad-n">0</b></button>
+      <button class="nq-btn nq-good-btn" id="nq-good" aria-label="La sabía"><b id="nq-good-n">0</b> ✓</button>
+      <button class="nq-btn nq-arrow" id="nq-next" aria-label="Tarjeta siguiente">→</button>
+    </div>
+    <p class="nq-help">Clic o barra espaciadora para voltear · ← → para navegar · en el celular desliza a la derecha (✓) o izquierda (✕)</p>
+  </div>
+
+  <div class="nq-end" id="nq-end">
+    <h3>¡Mazo completado!</h3>
+    <div class="nq-bigscore"><span id="nq-end-score">0</span> pts</div>
+    <p class="nq-pct" id="nq-end-pct"></p>
+    <div class="nq-badges" id="nq-badges"></div>
+    <div class="nq-end-actions">
+      <button class="nq-btn" id="nq-end-review">📝 Repasar las falladas</button>
+      <button class="nq-btn" id="nq-end-restart">↺ Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<div class="nq-load">
+  <button id="nq-load-btn" type="button">Cargar mis tarjetas (.csv)</button>
+  <input type="file" id="nq-file" accept=".csv,text/csv" hidden>
+</div>
+</section>
+
+<!-- ============ 8. CONCLUSIONES ============ -->
+<section id="conclusiones">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Reflexión final</span>
+      <h2>Conclusiones</h2>
+      <p style="text-align:left;">Napo posee una riqueza cultural y natural invaluable, forjada por siglos de
+      historia, resistencia y convivencia entre distintos pueblos amazónicos. No obstante, enfrenta desafíos
+      urgentes: la falta de visibilización de su patrimonio en el SIPCE y la progresiva pérdida de la transmisión
+      intergeneracional de saberes, lengua y tradiciones. Actualmente existen <strong>169 bienes inmateriales
+      registrados</strong> en la provincia que aún requieren una documentación más completa y accesible. Este
+      portal digital pretende ser una herramienta de salvaguardia, difusión y educación, que acerque el
+      patrimonio de Napo a nuevas generaciones y visibilice su enorme valor cultural.</p>
+    </div>
+    <div class="stat-grande reveal">
+      <div class="stat-box"><div class="num">169</div><small>Bienes inmateriales registrados</small></div>
+      <div class="stat-box"><div class="num">5</div><small>Cantones con identidad propia</small></div>
+      <div class="stat-box"><div class="num">56,75%</div><small>Población indígena</small></div>
+      <div class="stat-box"><div class="num">3</div><small>Lenguas vivas: español, kichwa y waorani</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. REFERENCIAS Y CRÉDITOS ============ -->
+<section id="referencias">
+  <div class="contenedor">
+    <div class="encabezado-seccion reveal">
+      <span class="tag">Fuentes consultadas</span>
+      <h2>Referencias bibliográficas</h2>
+      <p>Lista de referencias en formato APA. Reemplaza los siguientes espacios con las citas definitivas del
+      trabajo de investigación.</p>
+    </div>
+    <ul class="lista-apa reveal">
+      <li>Apellido, N. (Año). <em>Título del documento o artículo sobre historia de Napo</em>. Editorial / Fuente. URL</li>
+      <li>Instituto Nacional de Patrimonio Cultural (INPC). (Año). <em>Alfarería tradicional de Tena y Archidona,
+      Patrimonio Cultural Inmaterial del Ecuador</em>. [Completar referencia].</li>
+      <li>Gobierno Autónomo Descentralizado de Napo. (Año). <em>Plan de Desarrollo y Ordenamiento Territorial de
+      la provincia de Napo</em>. [Completar referencia].</li>
+      <li>Apellido, N. (Año). <em>Título sobre pueblos y nacionalidades de la Amazonía ecuatoriana</em>. [Completar
+      referencia].</li>
+      <li>Apellido, N. (Año). <em>Título sobre gastronomía y música tradicional Naporuna</em>. [Completar
+      referencia].</li>
+    </ul>
+    <div class="creditos reveal">
+      <h3>Créditos de imágenes y videos</h3>
+      <p><strong>Imágenes:</strong> Wikimedia Commons (cada archivo tiene su propia licencia libre, p. ej. CC BY / CC BY-SA / dominio público; autor y licencia en la página del archivo).</p>
+      <ul>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Interior_traditional_house,_Ahuano,_Ecuador_(2009).jpg" target="_blank" rel="noopener">Interior traditional house, Ahuano, Ecuador (2009)</a></li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Local_residents_of_Ahuano,_Ecuador_1_(2009).jpg" target="_blank" rel="noopener">Local residents of Ahuano, Ecuador 1 (2009)</a></li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Abuela_y_nieta_(cultura_Waorani).jpg" target="_blank" rel="noopener">Abuela y nieta (cultura Waorani)</a></li>
+        <li><a href="https://commons.wikimedia.org/wiki/File:Maito_de_tilapia_(gastronom%C3%ADa_Ecuatoriana).jpg" target="_blank" rel="noopener">Maito de tilapia (gastronomía Ecuatoriana)</a> — Kevinmero</li>
+        <li><a href="https://commons.wikimedia.org/wiki/Category:Napo_Province" target="_blank" rel="noopener">Category: Napo Province</a> y <a href="https://commons.wikimedia.org/wiki/Category:Archidona,_Ecuador" target="_blank" rel="noopener">Archidona, Ecuador</a> (Volcán Sumaco, río Hollín, río Misahuallí, Puerto Misahuallí, Iglesia de Archidona, Tena de noche)</li>
+      </ul>
+      <p><strong>Videos:</strong> incrustados desde YouTube; los derechos pertenecen a sus canales. Se enlazan con fines educativos: Chicos del Barrio («Ñuka Warmishitalla»), Huatusa Loca («Tuna Malta Huarmi»), Tushuy Taqui Sacha Manda, Mishki Chullumbu («Sanguru Tullo»), festival de la Chonta en Archidona, danza Curi Muyu y cultura de Archidona.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>Universidad Estatal de Milagro (UNEMI)</h4>
+      <p>Facultad de Ciencias e Ingeniería · Carrera de Tecnologías de la Información<br>
+      Asignatura: Apreciación del Arte y la Cultura<br>
+      Docente: MSc. Sandra Elizabeth Campuzano Vera<br>
+      Periodo académico: Agosto 2026 – Diciembre 2026<br>
+      Milagro – Ecuador</p>
+    </div>
+    <div>
+      <h4>Integrantes del grupo</h4>
+      <ul class="lista-integrantes">
+        <li>Álvarez López Milena Nicole</li>
+        <li>Andrade Soledispa Abraham Gerardo</li>
+        <li>Jácome Granada César David</li>
+        <li>Paucar Salazar Jefferson Alexander</li>
+        <li>Peña Chica Byron Gabriel</li>
+        <li>Quiñonez Galarza Aarón Alexander</li>
+        <li>Ron Guerrero Johanna Gabriela</li>
+        <li>Sancán Sancán Adams Joel</li>
+        <li>Solina Acosta Ana Nicole</li>
+        <li>Villamarín Villamarín José Luis</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-institucion">
+    <img src="img/logo-unemi.png" alt="Logo de la Universidad Estatal de Milagro (UNEMI)">
+    <img src="img/logo-faci.png" alt="Logo de la Facultad de Ciencias e Ingeniería (FACI)">
+    <div>
+      <h4>Proyecto académico de la Universidad Estatal de Milagro</h4>
+      <p>Desarrollado en la Facultad de Ciencias e Ingeniería (FACI), carrera de Tecnología de la Información, por estudiantes del curso C3, grupo 2, tercer semestre.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Proyecto académico "Patrimonio Cultural Digital del Ecuador" — Portal Cultural Digital de Napo · Prototipo
+    sin fines comerciales, elaborado con fines educativos.
+  </div>
+</footer>
+
+<button id="btn-arriba" aria-label="Volver arriba">↑</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
