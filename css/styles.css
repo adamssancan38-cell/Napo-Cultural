@@ -426,3 +426,124 @@
   .footer-institucion h4{margin:0 0 .3rem;color:#fff;font-size:1.05rem;}
   .footer-institucion p{margin:0;color:#b9cfc2;font-size:.9rem;line-height:1.5;}
   @media (max-width:600px){.footer-institucion{flex-wrap:wrap;}.footer-institucion img{width:64px;height:64px;}.footer-institucion div{flex-basis:100%;}}
+
+
+/* ===== Parte 1 / Parte 2, interactivos incrustados, audio ===== */
+.parte-chip{display:inline-block;background:var(--terracota);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .6rem;border-radius:999px;vertical-align:middle;margin-right:.5rem;}
+.parte-titulo{color:var(--verde-selva);font-size:1.5rem;margin:3rem 0 1rem;}
+.nota-interactivo{text-align:center;margin-top:1rem;}
+.audio-wrapper{max-width:640px;margin:1.5rem auto 0;background:#fff;border-radius:16px;padding:1rem 1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.1);}
+.audio-wrapper audio{width:100%;display:block;}
+.mensaje-video-extra{display:none;background:#fff3e0;color:#7a4300;padding:1rem 1.3rem;border-radius:12px;margin:1rem auto 0;font-weight:700;text-align:center;border:1px dashed var(--terracota);max-width:880px;}
+@media (min-width:921px){
+  nav#menu-links{gap:.2rem .5rem;flex-wrap:wrap;justify-content:flex-end;}
+  nav#menu-links a{font-size:.84rem;padding:.35rem .4rem;white-space:nowrap;}
+}
+
+/* ===== Mapa y línea de tiempo interactivos (integrados de forma nativa) =====
+   Tailwind se carga con preflight desactivado y limitado a .napo-tw para no alterar el resto del sitio. */
+:where(.napo-tw) *,:where(.napo-tw) ::before,:where(.napo-tw) ::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb;}
+:where(.napo-tw) h1,:where(.napo-tw) h2,:where(.napo-tw) h3,:where(.napo-tw) h4,:where(.napo-tw) h5{font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:normal;margin:0;}
+:where(.napo-tw) p,:where(.napo-tw) ul,:where(.napo-tw) ol,:where(.napo-tw) blockquote,:where(.napo-tw) figure,:where(.napo-tw) dl,:where(.napo-tw) dd{margin:0;}
+:where(.napo-tw) ul,:where(.napo-tw) ol{list-style:none;padding:0;}
+:where(.napo-tw) section{padding:0;}
+:where(.napo-tw) button,:where(.napo-tw) input,:where(.napo-tw) select,:where(.napo-tw) textarea{font:inherit;color:inherit;margin:0;}
+:where(.napo-tw) button{background:transparent;padding:0;cursor:pointer;}
+:where(.napo-tw) button:disabled{cursor:default;}
+:where(.napo-tw) svg,:where(.napo-tw) img{display:block;vertical-align:middle;}
+:where(.napo-tw) a{color:inherit;text-decoration:inherit;}
+:where(.napo-tw) table{border-collapse:collapse;}
+#mapa-interactivo,#linea-interactiva{padding:0;font-family:'Inter',system-ui,sans-serif;}
+.napo-tw{overflow-x:clip;}
+/* barras de filtros pegajosas: quedan debajo del menú fijo del sitio */
+#mapa-interactivo section.sticky,#linea-interactiva section.sticky{top:76px;}
+@media (min-width:1024px){#mapa-interactivo aside.sticky{top:190px;}#linea-interactiva aside.sticky{top:230px;}}
+#detailModal{z-index:2000;}
+
+    
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Animación de pulso para marcadores activos en SVG */
+    @keyframes svgPulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      70% {
+        transform: scale(2.15);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2.15);
+        opacity: 0;
+      }
+    }
+    .marker-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: svgPulse 2.2s infinite cubic-bezier(0.24, 0, 0.38, 1);
+    }
+    .marker-group {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .marker-group:hover .marker-core {
+      stroke-width: 3.5;
+    }
+    .canton-shape {
+      transition: fill 0.25s ease, stroke-width 0.25s ease;
+    }
+    .canton-shape:hover {
+      filter: brightness(1.04);
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    /* Estilos personalizados para desplazamiento suave y animaciones sutiles */
+    
+    .timeline-line {
+      background: linear-gradient(180deg, #1b4d36 0%, #d15e36 50%, #d99e26 100%);
+    }
+    .card-enter {
+      animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+      
+
+/* ===== Colores sólidos para el mapa y la línea de tiempo (no dependen de Tailwind) ===== */
+.napo-tw{--selva-950:#0a1f16;--selva-900:#123524;--selva-800:#1b4d36;--selva-700:#276a4b;--selva-600:#348760;--selva-100:#e4f0ea;--selva-50:#f3f8f5;
+  --terracota-600:#b84b27;--terracota-500:#d15e36;--ocre-400:#eab64d;--rio-400:#4ea5cf;--crema-50:#fcfaf5;--crema-200:#e8dec9;}
+.napo-tw .bg-crema-50{background-color:var(--crema-50)!important;}
+.napo-tw .bg-selva-900{background-color:var(--selva-900)!important;color:var(--crema-50);}
+.napo-tw .bg-selva-800{background-color:var(--selva-800)!important;}
+.napo-tw .border-terracota-600{border-color:var(--terracota-600)!important;}
+.napo-tw .border-selva-700{border-color:var(--selva-700)!important;}
+.napo-tw .text-selva-100{color:var(--selva-100)!important;}
+.napo-tw .text-ocre-400,.napo-tw .text-guayusa-400{color:var(--ocre-400)!important;}
+.napo-tw .text-terracota-500{color:var(--terracota-500)!important;}
+.napo-tw .text-rio-400{color:var(--rio-400)!important;}
+.napo-tw .text-emerald-400{color:#34d399!important;}
+.napo-tw .bg-ocre-400,.napo-tw .bg-guayusa-400{background-color:var(--ocre-400)!important;}
+/* cuadro de indicadores del encabezado: verde oscuro sólido */
+.napo-tw header .bg-selva-950\/65,.napo-tw header .bg-selva-950\/60{background-color:var(--selva-950)!important;backdrop-filter:none!important;}
+/* barras de filtros al bajar: sólidas, sin transparencia */
+.napo-tw .sticky{background-color:var(--crema-50)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}

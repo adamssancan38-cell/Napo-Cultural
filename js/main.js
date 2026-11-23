@@ -72,173 +72,6 @@ const observadorContador = new IntersectionObserver((entradas)=>{
 observadorContador.observe(document.querySelector('.dato-destacado'));
 
 /* ======================================================
-   MAPA DE NAPO (Google Maps)
-   ====================================================== */
-const infoCantones = {
-  tena:{ nombre:"Tena", color:"#d62828",
-    texto:"Capital de la provincia de Napo, conocida como la 'Capital Mundial del Guaraná'. Es el principal centro administrativo, comercial y turístico, referente del turismo comunitario y de aventura en la Amazonía." },
-  archidona:{ nombre:"Archidona", color:"#e76f51",
-    texto:"Fundada en 1560, es un cantón de fuerte identidad kichwa. Allí se celebra la Fiesta de la Chonta y se practica la alfarería tradicional declarada Patrimonio Inmaterial del Ecuador en 2022." },
-  arosemena:{ nombre:"Carlos Julio Arosemena Tola", color:"#2d6a4f",
-    texto:"El cantón más pequeño de la provincia. Alberga un museo arqueológico comunitario con petroglifos (piedritas grabadas) y un jardín botánico de gran valor cultural y natural." },
-  elchaco:{ nombre:"El Chaco", color:"#48cae4",
-    texto:"Ubicado en la zona de transición entre la Sierra y la Amazonía, con presencia del pueblo Kichwa de la sierra en comunidades como Oyacachi. Destaca por sus paisajes de montaña y aguas termales." },
-  quijos:{ nombre:"Quijos", color:"#e9c46a",
-    texto:"Su cabecera cantonal es Baeza, una de las ciudades más antiguas de la Amazonía ecuatoriana (1559). Combina páramo y selva, con comunidades kichwas de la sierra como Papallacta." }
-};
-
-const panelTitulo = document.getElementById('panel-canton-titulo');
-const panelTexto = document.getElementById('panel-canton-texto');
-
-function mostrarInfoCanton(id){
-  const data = infoCantones[id];
-  if(!data) return;
-  panelTitulo.textContent = data.nombre;
-  panelTitulo.style.color = data.color;
-  panelTexto.textContent = data.texto;
-  document.getElementById('panel-canton').style.borderLeftColor = data.color;
-  actualizarMapa(id);
-}
-
-/* ---- Google Maps ----
-   Modo 1 (por defecto, sin clave): mapa incrustado de Google Maps. Se puede acercar, alejar y explorar;
-   al elegir un cantón se muestra su marcador y se actualizan los enlaces "Abrir" y "Cómo llegar".
-   Modo 2 (opcional): si js/config.js contiene una clave de Maps JavaScript API, se muestran los
-   cinco marcadores a la vez. Si la clave falla, vuelve solo al Modo 1. */
-const MAPA_PROVINCIA = { q:'Provincia de Napo, Ecuador', z:8 };
-const ubicacionesMapa = {
-  tena:      { q:'Tena, Napo, Ecuador',                          coords:[-0.9936,-77.8156], z:13 },
-  archidona: { q:'Archidona, Napo, Ecuador',                     coords:[-0.9203,-77.8014], z:13 },
-  arosemena: { q:'Carlos Julio Arosemena Tola, Napo, Ecuador',   coords:[-1.0500,-77.8700], z:13 },
-  elchaco:   { q:'El Chaco, Napo, Ecuador',                      coords:[-0.3167,-77.8167], z:13 },
-  quijos:    { q:'Baeza, Quijos, Napo, Ecuador',                 coords:[-0.4667,-77.8833], z:13 }
-};
-const contornoNapo = [
-  [0.15,-77.95],[-0.05,-77.55],[-0.35,-77.35],[-0.75,-77.3],
-  [-1.3,-77.55],[-1.35,-78.05],[-0.85,-78.15],[-0.35,-78.15],[0.15,-77.95]
-];
-const mapaIframe = document.getElementById('mapa-iframe');
-const mapaApiDiv = document.getElementById('mapa-api');
-const enlaceAbrir = document.getElementById('mapa-abrir');
-const enlaceRuta  = document.getElementById('mapa-ruta');
-let mapaGoogle = null, marcadoresGoogle = {}, ventanaInfo = null;
-
-function urlEmbed(q, z){ return 'https://www.google.com/maps?q=' + encodeURIComponent(q) + '&hl=es&z=' + z + '&output=embed'; }
-function urlAbrir(q){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
-function urlRuta(q){ return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(q); }
-
-function actualizarEnlaces(q){
-  if(enlaceAbrir) enlaceAbrir.href = urlAbrir(q);
-  if(enlaceRuta)  enlaceRuta.href  = urlRuta(q);
-}
-
-function actualizarMapa(id){
-  const u = ubicacionesMapa[id]; if(!u) return;
-  actualizarEnlaces(u.q);
-  if(mapaGoogle){
-    mapaGoogle.panTo({lat:u.coords[0], lng:u.coords[1]}); mapaGoogle.setZoom(12);
-    const m = marcadoresGoogle[id];
-    if(m && ventanaInfo){
-      ventanaInfo.setContent('<strong>' + infoCantones[id].nombre + '</strong><br><a href="' + urlAbrir(u.q) + '" target="_blank" rel="noopener">Abrir en Google Maps</a> · <a href="' + urlRuta(u.q) + '" target="_blank" rel="noopener">Cómo llegar</a>');
-      ventanaInfo.open({map:mapaGoogle, anchor:m});
-    }
-  } else if(mapaIframe){
-    mapaIframe.src = urlEmbed(u.q, u.z);
-  }
-}
-
-function verProvincia(){
-  actualizarEnlaces(MAPA_PROVINCIA.q);
-  if(mapaGoogle){ mapaGoogle.panTo({lat:-0.75,lng:-77.75}); mapaGoogle.setZoom(9); if(ventanaInfo) ventanaInfo.close(); }
-  else if(mapaIframe){ mapaIframe.src = urlEmbed(MAPA_PROVINCIA.q, MAPA_PROVINCIA.z); }
-  panelTitulo.textContent = 'Selecciona un cantón';
-  panelTitulo.style.color = '';
-  panelTexto.textContent = 'Haz clic sobre un punto del mapa o en la leyenda para conocer más información de cada cantón de la provincia de Napo.';
-  document.getElementById('panel-canton').style.borderLeftColor = '';
-}
-document.getElementById('mapa-provincia').addEventListener('click', verProvincia);
-
-function volverAlMapaIncrustado(){
-  mapaGoogle = null; marcadoresGoogle = {};
-  if(mapaApiDiv) mapaApiDiv.hidden = true;
-  if(mapaIframe) mapaIframe.style.display = '';
-}
-window.gm_authFailure = volverAlMapaIncrustado;   // clave inválida o con restricciones: se usa el mapa incrustado
-
-function iniciarMapaGoogleAvanzado(){
-  mapaGoogle = new google.maps.Map(mapaApiDiv, {
-    center:{lat:-0.75,lng:-77.75}, zoom:9, gestureHandling:'cooperative',
-    mapTypeControl:true, streetViewControl:false, fullscreenControl:true
-  });
-  new google.maps.Polygon({
-    paths: contornoNapo.map(p=>({lat:p[0], lng:p[1]})), map:mapaGoogle,
-    strokeColor:'#1b4332', strokeOpacity:.9, strokeWeight:2, fillColor:'#2d6a4f', fillOpacity:.05, clickable:false
-  });
-  ventanaInfo = new google.maps.InfoWindow();
-  Object.keys(ubicacionesMapa).forEach(id=>{
-    const u = ubicacionesMapa[id], data = infoCantones[id];
-    const m = new google.maps.Marker({
-      position:{lat:u.coords[0], lng:u.coords[1]}, map:mapaGoogle, title:data.nombre,
-      icon:{ path:google.maps.SymbolPath.CIRCLE, scale: id==='tena' ? 12 : 9, fillColor:data.color,
-             fillOpacity:.95, strokeColor:'#ffffff', strokeWeight:2 }
-    });
-    m.addListener('click', ()=> mostrarInfoCanton(id));
-    marcadoresGoogle[id] = m;
-  });
-  mapaApiDiv.hidden = false;
-  if(mapaIframe) mapaIframe.style.display = 'none';
-}
-
-(function cargarMapaAvanzadoSiHayClave(){
-  const clave = window.NAPO_CONFIG && window.NAPO_CONFIG.GOOGLE_MAPS_API_KEY;
-  if(!clave) return;                                   // sin clave: se queda el mapa incrustado
-  window.__napoMapaListo = iniciarMapaGoogleAvanzado;
-  const s = document.createElement('script');
-  s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(clave) + '&callback=__napoMapaListo&language=es&region=EC';
-  s.async = true; s.onerror = volverAlMapaIncrustado;
-  document.head.appendChild(s);
-})();
-
-document.querySelectorAll('.leyenda-cantones li').forEach(li=>{
-  li.addEventListener('click', ()=> mostrarInfoCanton(li.dataset.canton));
-  li.addEventListener('keypress', (e)=>{ if(e.key==='Enter') mostrarInfoCanton(li.dataset.canton); });
-});
-
-/* ======================================================
-   LÍNEA DE TIEMPO INTERACTIVA
-   ====================================================== */
-const eventosHistoria = [
-  {anio:"Pueblos originarios", titulo:"Omagua y Quijos", texto:"Pueblos originarios del territorio, con activas relaciones comerciales con la región Sierra y con el Imperio Inca."},
-  {anio:"1539", titulo:"Expedición de Gonzalo Díaz de Pineda", texto:"Primera incursión española registrada en el territorio amazónico que hoy corresponde a Napo."},
-  {anio:"1540", titulo:"Expedición de Gonzalo Pizarro", texto:"Nueva expedición española en busca de El Dorado y la Canela, que profundizó el contacto con los pueblos Quijos."},
-  {anio:"1559", titulo:"Fundación de Baeza", texto:"Una de las primeras ciudades españolas en la Amazonía ecuatoriana, hoy cabecera cantonal de Quijos."},
-  {anio:"1560", titulo:"Fundación de Archidona", texto:"Fundada como centro de administración colonial sobre el territorio y la población Quijos."},
-  {anio:"1563", titulo:"Fundación de Ávila", texto:"Nueva ciudad colonial fundada para consolidar el control español sobre la región."},
-  {anio:"1578", titulo:"Rebelión de los Quijos, liderada por Jumandy", texto:"Los pueblos Quijos se levantaron contra el dominio español, destruyendo las ciudades de Ávila y Archidona. El levantamiento fue sofocado y su líder, Jumandy, fue ejecutado en Quito."},
-  {anio:"Colonia", titulo:"Territorio marginal y de destierro", texto:"Durante la Colonia, la región amazónica de Napo fue considerada un territorio periférico, utilizado incluso como lugar de destierro."},
-  {anio:"Siglos XIX-XX", titulo:"Auge del caucho y el petróleo", texto:"La explotación del caucho primero, y del petróleo después, transformaron la economía y la dinámica poblacional de la provincia."},
-  {anio:"Actualidad", titulo:"Transformación moderna de Tena y Archidona", texto:"Tena y Archidona se consolidan como centros urbanos modernos sin perder su identidad amazónica y kichwa."}
-];
-
-const contenedorTiempo = document.getElementById('linea-tiempo');
-eventosHistoria.forEach((ev)=>{
-  const item = document.createElement('div');
-  item.className = 'item-tiempo';
-  item.innerHTML = `
-    <div class="cabecera-tiempo">
-      <span class="anio">${ev.anio}</span>
-      <span class="titulo-evento">${ev.titulo}</span>
-      <span class="flecha-tiempo">▾</span>
-    </div>
-    <div class="cuerpo-tiempo"><p>${ev.texto}</p></div>
-  `;
-  item.querySelector('.cabecera-tiempo').addEventListener('click', ()=>{
-    item.classList.toggle('abierto');
-  });
-  contenedorTiempo.appendChild(item);
-});
-
-/* ======================================================
    PESTAÑAS SECCIÓN ARTE
    ====================================================== */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -254,19 +87,19 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
    GASTRONOMÍA: tarjetas + modal "ver más"
    ====================================================== */
 const platosNapo = [
-  { id:'maito', titulo:'Maito de pescado', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Maito%20de%20tilapia%20%28gastronom%C3%ADa%20Ecuatoriana%29.jpg?width=900',
+  { id:'maito', titulo:'Maito de pescado', img:'img/maito-pescado.jpg',
     ingredientes:'Ingredientes: pescado de río (tilapia o bocachico), hoja de bijao, sal y hierbas amazónicas.',
     historia:'El pescado se envuelve en hoja de bijao y se cocina al calor directo de la brasa o la ceniza, una técnica ancestral que conserva el sabor y la humedad del alimento sin necesidad de utensilios metálicos.' },
-  { id:'chontacuro', titulo:'Chontacuro', img:'img/chontacuro.svg',
+  { id:'chontacuro', titulo:'Chontacuro', img:'img/chontacuro.jpg',
     ingredientes:'Ingredientes: larva del escarabajo de la palma de chonta, sal al gusto.',
     historia:'Es una larva rica en proteínas y vitaminas, tradicionalmente asada en brocheta sobre brasas. Representa un alimento ancestral de alto valor nutricional dentro de la dieta kichwa amazónica.' },
-  { id:'caldo', titulo:'Caldo de gallina criolla', img:'img/caldo-gallina.svg',
+  { id:'caldo', titulo:'Caldo de gallina criolla', img:'img/caldo-gallina.jpg',
     ingredientes:'Ingredientes: gallina criolla, yuca, zanahoria, cebolla y hierbas aromáticas locales.',
     historia:'Plato de preparación cotidiana y festiva en las comunidades de Napo, elaborado con ingredientes propios de la chacra amazónica y aves criadas de forma tradicional.' },
-  { id:'maytu', titulo:'Maytu de pescado', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Maito%20de%20tilapia%20%28gastronom%C3%ADa%20Ecuatoriana%29.jpg?width=900',
+  { id:'maytu', titulo:'Maytu de pescado', img:'img/maytu-pescado.jpg',
     ingredientes:'Ingredientes: pescado de río, hoja de bijao, condimentos naturales de la zona.',
     historia:'Es un plato de carácter ceremonial, preparado especialmente durante la Fiesta de la Chonta, donde se comparte en comunidad como parte de los rituales de agradecimiento a la naturaleza.' },
-  { id:'uchumanga', titulo:'Uchumanga', img:'img/uchumanga.svg',
+  { id:'uchumanga', titulo:'Uchumanga', img:'img/uchumanga.jpg',
     ingredientes:'Ingredientes: ají amazónico, hongos del bosque, palmito y carnes de monte o pescado.',
     historia:'Salsa picante tradicional que acompaña pescados, carnes de monte, hongos y palmito, aportando el característico sabor picante de la gastronomía kichwa amazónica.' }
 ];
@@ -578,6 +411,19 @@ document.addEventListener('error', (e)=>{
 (function(){
   const v = document.getElementById('video-napo');
   const m = document.getElementById('mensaje-video');
+  if(!v || !m) return;
+  const src = v.querySelector('source');
+  if(src) src.addEventListener('error', ()=> m.style.display = 'block');
+  v.addEventListener('error', ()=> m.style.display = 'block');
+})();
+
+
+/* ======================================================
+   SEGUNDO VIDEO: mensaje si no se encuentra video/napo-2.mp4
+   ====================================================== */
+(function(){
+  const v = document.getElementById('video-napo-2');
+  const m = document.getElementById('mensaje-video-2');
   if(!v || !m) return;
   const src = v.querySelector('source');
   if(src) src.addEventListener('error', ()=> m.style.display = 'block');

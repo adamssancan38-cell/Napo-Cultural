@@ -7,6 +7,10 @@ napo-cultural-heritage-portal/
 ├── js/config.js      (clave opcional de Google Maps; vacía por defecto)
 ├── img/              (infografía, logos y las ilustraciones/fotos de cada sección)
 ├── video/napo.mp4    (video del grupo)
+├── video/napo-2.mp4  (segundo video del grupo, 720p comprimido)
+├── audio/audio-napo.m4a (audio del proyecto)
+├── js/interactivos.js (mapa cultural y línea de tiempo "Memoria viva", integrados de forma nativa)
+├── referencia/       (los dos HTML originales independientes, solo como referencia)
 └── flashcards.csv    (tarjetas del quiz)
 
 CÓMO VERLO (importante para que carguen los videos de YouTube y el mapa)
@@ -32,3 +36,16 @@ GOOGLE MAPS
   3) Pégala en js/config.js (GOOGLE_MAPS_API_KEY). En un sitio estático la clave siempre es visible
      en el navegador: por eso la restricción por dominio es obligatoria. No uses una clave sin restricciones.
   Si la clave falla, el sitio vuelve solo al mapa incrustado.
+
+
+MAPA Y LÍNEA DE TIEMPO (ya unificados)
+- El mapa cultural interactivo y la línea de tiempo "Memoria viva" ya son parte nativa de index.html (sin iframes).
+  Reemplazan al mapa de cantones y a la línea de tiempo antiguos. Su código está en js/interactivos.js y css/styles.css.
+- Usan Tailwind por CDN limitado a su contenedor (.napo-tw), así no afecta el resto del sitio. Necesitan internet.
+- referencia/ conserva los HTML originales independientes.
+
+PUBLICAR EN GITHUB PAGES
+1) Sube todo el contenido de esta carpeta (index.html en la raíz del repositorio) a un repositorio nuevo.
+2) Settings > Pages > Source: "Deploy from a branch" > rama main, carpeta / (root).
+3) A los pocos minutos queda en https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/
+Nota: si subes archivos arrastrándolos en la web de GitHub, el límite es 25 MB por archivo (video/napo.mp4 pesa ~22 MB, cabe).
