@@ -1,0 +1,51 @@
+PORTAL CULTURAL DE NAPO - estructura del proyecto
+
+napo-cultural-heritage-portal/
+├── index.html        (estructura de la página)
+├── css/styles.css    (estilos)
+├── js/main.js        (mapa, línea de tiempo, gastronomía, quiz, etc.)
+├── js/config.js      (clave opcional de Google Maps; vacía por defecto)
+├── img/              (infografía, logos y las ilustraciones/fotos de cada sección)
+├── video/napo.mp4    (video del grupo)
+├── video/napo-2.mp4  (segundo video del grupo, 720p comprimido)
+├── audio/audio-napo.m4a (audio del proyecto)
+├── js/interactivos.js (mapa cultural y línea de tiempo "Memoria viva", integrados de forma nativa)
+├── referencia/       (los dos HTML originales independientes, solo como referencia)
+└── flashcards.csv    (tarjetas del quiz)
+
+CÓMO VERLO (importante para que carguen los videos de YouTube y el mapa)
+YouTube y Google Maps NO cargan si abres index.html con doble clic (file://).
+Opción 1 (local): ejecuta ./iniciar.sh (o, en una terminal en esta carpeta:
+    python3 -m http.server 8000 )
+  y entra a http://localhost:8000
+Opción 2: súbelo a un hosting gratis (GitHub Pages, Netlify, Vercel) y ahí funciona todo.
+
+IMÁGENES
+- img/ ya incluye todas las imágenes que antes faltaban (alfarería, fiestas, instrumentos, platos, etc.).
+  Son recortes/ilustraciones de la infografía del grupo y dibujos en el mismo estilo.
+- Para usar una foto real: guárdala en img/ con el mismo nombre (o cambia el nombre en index.html / js/main.js).
+- Las fotos de Wikimedia Commons cargan por internet; si una falla se muestra la imagen local de respaldo.
+
+GOOGLE MAPS
+- Por defecto usa el mapa incrustado de Google Maps: no necesita clave. Se puede acercar, alejar y explorar;
+  al elegir un cantón (leyenda o panel) se centra en él y se actualizan "Abrir en Google Maps" y "Cómo llegar".
+- Opcional (los 5 marcadores a la vez sobre el mapa):
+  1) En Google Cloud Console crea un proyecto y activa "Maps JavaScript API".
+  2) Crea una clave de API (Credenciales) y restríngela: "Referencias HTTP" con tu dominio
+     (por ejemplo https://napo-cultural-unemi.vercel.app/* y http://localhost:8000/*) y solo a "Maps JavaScript API".
+  3) Pégala en js/config.js (GOOGLE_MAPS_API_KEY). En un sitio estático la clave siempre es visible
+     en el navegador: por eso la restricción por dominio es obligatoria. No uses una clave sin restricciones.
+  Si la clave falla, el sitio vuelve solo al mapa incrustado.
+
+
+MAPA Y LÍNEA DE TIEMPO (ya unificados)
+- El mapa cultural interactivo y la línea de tiempo "Memoria viva" ya son parte nativa de index.html (sin iframes).
+  Reemplazan al mapa de cantones y a la línea de tiempo antiguos. Su código está en js/interactivos.js y css/styles.css.
+- Usan Tailwind por CDN limitado a su contenedor (.napo-tw), así no afecta el resto del sitio. Necesitan internet.
+- referencia/ conserva los HTML originales independientes.
+
+PUBLICAR EN GITHUB PAGES
+1) Sube todo el contenido de esta carpeta (index.html en la raíz del repositorio) a un repositorio nuevo.
+2) Settings > Pages > Source: "Deploy from a branch" > rama main, carpeta / (root).
+3) A los pocos minutos queda en https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/
+Nota: si subes archivos arrastrándolos en la web de GitHub, el límite es 25 MB por archivo (video/napo.mp4 pesa ~22 MB, cabe).

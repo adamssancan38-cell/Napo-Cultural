@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe8d5"/><stop offset="1" stop-color="#fdf6ec"/></linearGradient></defs>
+<rect width="900" height="600" fill="url(#sky)"/><g fill="#2d6a4f" opacity=".9"><path d="M0 0h260c-60 40-150 60-260 40z"/><path d="M900 0H640c60 40 150 60 260 40z" fill="#52796f"/><path d="M0 600h220c-50-40-130-60-220-30z" fill="#52796f"/><path d="M900 600H690c50-40 130-60 210-30z"/></g>
+<g fill="#2d6a4f"><path d="M80 470c10-120 30-200 60-250 30 50 50 130 60 250z" opacity=".55"/><path d="M700 470c10-110 30-190 60-240 30 50 50 120 60 240z" opacity=".55"/></g>
+<rect x="0" y="470" width="900" height="130" fill="#52796f"/><rect x="0" y="470" width="900" height="14" fill="#2d6a4f"/>
+<path d="M170 480c-20-120 20-230 120-250 90-20 190 0 240 60 60-20 130 10 160 100 10 40 10 70 0 90z" fill="#8b8579"/>
+<path d="M170 480c-20-120 20-230 120-250 90-20 190 0 240 60" fill="none" stroke="#a8a193" stroke-width="10" opacity=".7"/>
+<g fill="none" stroke="#3b372f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M330 330m-48 0a48 48 0 1 0 96 0a48 48 0 1 0-96 0M330 330m-30 0a30 30 0 1 0 60 0a30 30 0 1 0-60 0M330 330m-12 0a12 12 0 1 0 24 0a12 12 0 1 0-24 0"/>
+<path d="M470 290l30 40 30-40 30 40 30-40"/><path d="M470 350l30 40 30-40 30 40 30-40"/>
+<path d="M610 280c0 40 40 40 40 80s-40 50-40 90"/>
+<circle cx="260" cy="430" r="6"/><circle cx="300" cy="430" r="6"/><circle cx="340" cy="430" r="6"/></g>
+<g fill="#e9c46a" stroke="#bc6c25" stroke-width="3"><path d="M150 480h60v-30h-60z"/><path d="M700 480h70v-34h-70z"/></g>
+<text x="450" y="574" font-family="Fredoka,Nunito,sans-serif" font-size="30" fill="#fff" text-anchor="middle" font-weight="600">Petroglifos · Museo de Carlos Julio Arosemena Tola</text></svg>

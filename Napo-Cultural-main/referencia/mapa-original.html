@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa Cultural y Patrimonial Interactivo de Napo | UNEMI</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter y Fraunces -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Fraunces', 'serif'],
+          },
+          colors: {
+            selva: {
+              950: '#0a1f16',
+              900: '#123524',
+              800: '#1b4d36',
+              700: '#276a4b',
+              600: '#348760',
+              100: '#e4f0ea',
+              50: '#f3f8f5',
+            },
+            terracota: {
+              700: '#9c3d1e',
+              600: '#b84b27',
+              500: '#d15e36',
+              100: '#fbeae4',
+            },
+            ocre: {
+              600: '#b58119',
+              500: '#d99e26',
+              400: '#eab64d',
+              100: '#fdf4df',
+            },
+            rio: {
+              700: '#1d5b79',
+              600: '#247196',
+              400: '#4ea5cf',
+              100: '#e1f2fa',
+            },
+            crema: {
+              50: '#fcfaf5',
+              100: '#f6f1e6',
+              200: '#e8dec9',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Animación de pulso para marcadores activos en SVG */
+    @keyframes svgPulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      70% {
+        transform: scale(2.15);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2.15);
+        opacity: 0;
+      }
+    }
+    .marker-pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: svgPulse 2.2s infinite cubic-bezier(0.24, 0, 0.38, 1);
+    }
+    .marker-group {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .marker-group:hover .marker-core {
+      stroke-width: 3.5;
+    }
+    .canton-shape {
+      transition: fill 0.25s ease, stroke-width 0.25s ease;
+    }
+    .canton-shape:hover {
+      filter: brightness(1.04);
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-crema-50 text-selva-950 font-sans antialiased flex flex-col min-h-screen selection:bg-ocre-400 selection:text-selva-950">
+
+  <!-- Cabecera Editorial Amazónica -->
+  <header class="bg-selva-900 text-crema-50 border-b-4 border-terracota-600 relative overflow-hidden shrink-0">
+    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#eab64d 1.2px, transparent 1.2px), radial-gradient(#4ea5cf 1.2px, #123524 1.2px); background-size: 30px 30px; background-position: 0 0, 15px 15px;"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-selva-800 border border-selva-700 text-ocre-400 text-[11px] font-semibold tracking-wide uppercase mb-1.5">
+            <span class="w-2 h-2 rounded-full bg-ocre-400 animate-pulse"></span>
+            UNEMI • Apreciación del Arte y la Cultura • Provincia de Napo
+          </div>
+          <h1 class="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight">
+            Mapa Cultural y Patrimonial Interactivo de Napo
+          </h1>
+          <p class="text-xs sm:text-sm text-selva-100 mt-1 max-w-2xl">
+            Cartografía digital de manifestaciones vivas, arqueología, fiestas rituales, alfarería y gobernanza territorial (<em>S15-Componente Práctico 2</em>).
+          </p>
+        </div>
+
+        <!-- Indicadores SIPCE y Gobernanza -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-3 bg-selva-950/65 backdrop-blur-sm px-3 py-2.5 rounded-2xl border border-selva-700/70 shrink-0 text-center">
+          <div class="px-1.5">
+            <p class="font-serif text-lg sm:text-xl font-bold text-ocre-400">169</p>
+            <p class="text-[10px] sm:text-[11px] text-selva-100 leading-tight">Bienes SIPCE</p>
+          </div>
+          <div class="px-1.5 border-l border-selva-700/70">
+            <p class="font-serif text-lg sm:text-xl font-bold text-emerald-400">90%</p>
+            <p class="text-[10px] sm:text-[11px] text-selva-100 leading-tight">Gastronomía</p>
+          </div>
+          <div class="px-1.5 border-l border-selva-700/70">
+            <p class="font-serif text-lg sm:text-xl font-bold text-terracota-500">5%</p>
+            <p class="text-[10px] sm:text-[11px] text-selva-100 leading-tight">Medicina Trad.</p>
+          </div>
+          <div class="px-1.5 border-l border-selva-700/70">
+            <p class="font-serif text-lg sm:text-xl font-bold text-rio-400">5%</p>
+            <p class="text-[10px] sm:text-[11px] text-selva-100 leading-tight">Técn. Ancest.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Filtros y Buscador -->
+  <section class="bg-crema-50/95 backdrop-blur-md border-b border-crema-200 sticky top-0 z-30 shadow-xs shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <!-- Buscador -->
+        <div class="relative w-full lg:w-72 shrink-0">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar cantón, fiesta, alfarería, mito..."
+            aria-label="Buscar en el mapa cultural"
+            class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-white border border-crema-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-selva-700 transition"
+          />
+          <svg class="w-4 h-4 text-selva-700 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+          </svg>
+          <button id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-gray-400 hover:text-gray-700 font-bold text-sm" title="Limpiar búsqueda">&times;</button>
+        </div>
+
+        <!-- Botones de Categoría -->
+        <div id="categoryFilterBar" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+          <!-- Generados dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Área Principal: Mapa Vectorial + Panel Lateral Dinámico -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- Columna Izquierda: Lienzo del Mapa Interactivo (7 columnas) -->
+      <div class="lg:col-span-7 flex flex-col gap-4">
+        <div class="bg-white rounded-3xl border border-crema-200 shadow-sm overflow-hidden relative">
+          
+          <!-- Cabecera interna del Mapa -->
+          <div class="px-4 sm:px-5 py-3 bg-crema-100/80 border-b border-crema-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rio-600"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-selva-900">Provincia de Napo • 5 Cantones</span>
+            </div>
+            <span id="visibleCountBadge" class="text-xs font-semibold text-selva-800 bg-white px-2.5 py-0.5 rounded-full border border-crema-200">
+              11 nodos georreferenciados
+            </span>
+          </div>
+
+          <!-- Contenedor Interactivo SVG -->
+          <div id="mapViewport" class="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-gradient-to-br from-[#eaf3ee] via-[#f5f2e8] to-[#e2f0f6] overflow-hidden select-none cursor-grab active:cursor-grabbing">
+            
+            <!-- SVG Vectorial de la Provincia de Napo -->
+            <svg id="napoSvg" viewBox="0 0 800 580" class="w-full h-full block" role="img" aria-label="Mapa vectorial interactivo de la provincia de Napo, Ecuador">
+              <defs>
+                <!-- Sombra suave para la silueta provincial -->
+                <filter id="provShadow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0a1f16" flood-opacity="0.14"/>
+                </filter>
+                <!-- Patrón topográfico sutil -->
+                <pattern id="topoGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1b4d36" stroke-width="0.4" stroke-opacity="0.08"/>
+                </pattern>
+              </defs>
+
+              <!-- Fondo topográfico -->
+              <rect width="800" height="580" fill="url(#topoGrid)" />
+
+              <!-- Grupo Transformable para Zoom y Paneo -->
+              <g id="mapTransformGroup" transform="translate(0,0) scale(1)">
+                
+                <!-- Etiquetas de provincias vecinas (referencia geográfica) -->
+                <text x="240" y="45" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="2" opacity="0.65">SUCUMBÍOS</text>
+                <text x="65" y="260" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="2" opacity="0.65" transform="rotate(-70 65,260)">PICHINCHA / COTOPAXI</text>
+                <text x="655" y="250" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="2" opacity="0.65">ORELLANA</text>
+                <text x="430" y="555" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="2" opacity="0.65">PASTAZA</text>
+
+                <!-- Silueta Provincial Agrupada con Sombra -->
+                <g filter="url(#provShadow)">
+                  <!-- Cantón El Chaco (Noreste) -->
+                  <path
+                    id="canton-el-chaco"
+                    class="canton-shape"
+                    d="M 330,72 L 455,65 L 545,98 L 575,165 L 495,215 L 410,195 L 350,145 Z"
+                    fill="#d7eadf"
+                    stroke="#1b4d36"
+                    stroke-width="2"
+                  />
+                  <!-- Cantón Quijos (Noroeste / Estribaciones Andinas) -->
+                  <path
+                    id="canton-quijos"
+                    class="canton-shape"
+                    d="M 155,125 L 255,82 L 330,72 L 350,145 L 410,195 L 340,255 L 235,248 L 165,195 Z"
+                    fill="#e2efe8"
+                    stroke="#1b4d36"
+                    stroke-width="2"
+                  />
+                  <!-- Cantón Archidona (Centro-Norte) -->
+                  <path
+                    id="canton-archidona"
+                    class="canton-shape"
+                    d="M 235,248 L 340,255 L 410,195 L 495,215 L 535,285 L 445,335 L 325,330 L 245,305 Z"
+                    fill="#cfe5d9"
+                    stroke="#1b4d36"
+                    stroke-width="2"
+                  />
+                  <!-- Cantón Tena (Centro-Sur y Cuenca Alta/Media del Napo) -->
+                  <path
+                    id="canton-tena"
+                    class="canton-shape"
+                    d="M 245,305 L 325,330 L 445,335 L 535,285 L 645,315 L 685,385 L 580,455 L 440,445 L 365,415 L 285,390 L 235,345 Z"
+                    fill="#c3dfcf"
+                    stroke="#1b4d36"
+                    stroke-width="2"
+                  />
+                  <!-- Cantón Carlos Julio Arosemena Tola (Suroeste) -->
+                  <path
+                    id="canton-arosemena-tola"
+                    class="canton-shape"
+                    d="M 285,390 L 365,415 L 440,445 L 420,515 L 325,505 L 270,450 Z"
+                    fill="#dcece3"
+                    stroke="#1b4d36"
+                    stroke-width="2"
+                  />
+                </g>
+
+                <!-- Red Hidrográfica Principal (Ríos Quijos, Misahuallí y Napo) -->
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+                  <!-- Río Quijos -->
+                  <path d="M 195,185 Q 280,175 365,148 T 515,112" stroke="#247196" stroke-width="3.5" />
+                  <text x="415" y="122" font-size="10" font-weight="600" fill="#1d5b79" transform="rotate(-14 415,122)">Río Quijos</text>
+
+                  <!-- Río Misahuallí -->
+                  <path d="M 355,245 Q 375,305 405,365" stroke="#247196" stroke-width="3" stroke-dasharray="1 0" />
+                  <text x="342" y="295" font-size="9.5" font-weight="600" fill="#1d5b79" transform="rotate(64 342,295)">Río Misahuallí</text>
+
+                  <!-- Río Napo (Eje fluvial principal) -->
+                  <path d="M 315,475 Q 365,415 405,365 T 535,355 T 675,348" stroke="#1d5b79" stroke-width="5" />
+                  <path d="M 315,475 Q 365,415 405,365 T 535,355 T 675,348" stroke="#4ea5cf" stroke-width="1.8" stroke-dasharray="6 4" />
+                  <text x="530" y="343" font-size="11" font-weight="700" fill="#1d5b79">Río Napo</text>
+                </g>
+
+                <!-- Nombres de los 5 Cantones -->
+                <g font-family="Fraunces, serif" font-weight="700" fill="#123524" opacity="0.42" pointer-events="none" text-anchor="middle">
+                  <text x="445" y="150" font-size="14">EL CHACO</text>
+                  <text x="255" y="175" font-size="14">QUIJOS</text>
+                  <text x="365" y="275" font-size="15">ARCHIDONA</text>
+                  <text x="485" y="395" font-size="17">TENA</text>
+                  <text x="352" y="468" font-size="11">C. J. AROSEMENA</text>
+                  <text x="352" y="481" font-size="11">TOLA</text>
+                </g>
+
+                <!-- Capa Dinámica de Marcadores Georreferenciados -->
+                <g id="markersLayer"></g>
+
+              </g>
+            </svg>
+
+            <!-- Controles de Zoom y Vista Flotantes -->
+            <div class="absolute bottom-3 right-3 flex flex-col gap-1.5 bg-white/95 backdrop-blur-sm p-1.5 rounded-2xl border border-crema-200 shadow-md">
+              <button id="zoomInBtn" class="w-8 h-8 rounded-xl hover:bg-selva-100 text-selva-900 font-bold flex items-center justify-center transition" title="Acercar (+)" aria-label="Acercar mapa">
+                +
+              </button>
+              <button id="zoomOutBtn" class="w-8 h-8 rounded-xl hover:bg-selva-100 text-selva-900 font-bold flex items-center justify-center transition border-y border-crema-100" title="Alejar (-)" aria-label="Alejar mapa">
+                &minus;
+              </button>
+              <button id="resetZoomBtn" class="w-8 h-8 rounded-xl hover:bg-selva-100 text-selva-900 flex items-center justify-center transition" title="Restablecer vista" aria-label="Restablecer vista del mapa">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Rosa de los Vientos minimalista -->
+            <div class="absolute top-3 left-3 bg-white/85 backdrop-blur-xs px-2.5 py-1.5 rounded-xl border border-crema-200 text-[10px] font-bold text-selva-900 flex items-center gap-1.5 pointer-events-none">
+              <svg class="w-3.5 h-3.5 text-terracota-600" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L15 11L22 12L15 13L12 22L9 13L2 12L9 11L12 2Z"/>
+              </svg>
+              <span>N • Arrastre o use rueda/botones</span>
+            </div>
+          </div>
+
+          <!-- Leyenda Interactiva inferior -->
+          <div class="px-4 py-3 bg-crema-50 border-t border-crema-200">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span class="font-bold text-selva-900">Leyenda de Categorías:</span>
+              <div id="legendItems" class="flex flex-wrap items-center gap-3">
+                <!-- Generada por JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista Rápida de Puntos Filtrados (Debajo del mapa para fácil selección táctil) -->
+        <div class="bg-white rounded-2xl border border-crema-200 p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2.5">
+            <h2 class="font-serif text-sm font-bold text-selva-900">Índice Territorial de Puntos</h2>
+            <span class="text-[11px] text-gray-500">Haz clic para centrar en el mapa</span>
+          </div>
+          <div id="quickPointList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-52 overflow-y-auto pr-1">
+            <!-- Botones generados por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Panel Lateral de Detalle Dinámico (5 columnas) -->
+      <aside class="lg:col-span-5 lg:sticky lg:top-20">
+        <div id="detailPanel" class="bg-white rounded-3xl border border-crema-200 shadow-md overflow-hidden flex flex-col">
+          <!-- Contenido renderizado dinámicamente según el punto activo -->
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="bg-selva-950 text-selva-100 border-t border-selva-800 mt-8 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+      <div>
+        <p class="font-semibold text-white">Universidad Estatal de Milagro (UNEMI) • Facultad de Ciencias e Ingeniería</p>
+        <p class="text-selva-100/75">Tecnologías de la Información — Apreciación del Arte y la Cultura (Grupo J, 2026)</p>
+      </div>
+      <div class="text-center sm:text-right">
+        <p class="text-ocre-400 font-medium">Fuente: S15-COMPONENTE PRACTICO_2.docx</p>
+        <p class="text-selva-100/70">Docente: MSc. Campuzano Vera Sandra Elizabeth</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lógica de la Aplicación -->
+  <script>
+    // Configuración de categorías y colores editoriales
+    const CATEGORIES = {
+      "Todos": {
+        color: "#123524",
+        badgeBg: "bg-selva-900 text-white",
+        pillInactive: "bg-white text-selva-900 border-crema-200 hover:bg-crema-100",
+        pillActive: "bg-selva-900 text-white border-selva-900"
+      },
+      "Fiestas y Rituales": {
+        color: "#b84b27",
+        badgeBg: "bg-terracota-600 text-white",
+        pillInactive: "bg-white text-terracota-700 border-crema-200 hover:bg-terracota-100/50",
+        pillActive: "bg-terracota-600 text-white border-terracota-600"
+      },
+      "Patrimonio Material": {
+        color: "#b58119",
+        badgeBg: "bg-ocre-600 text-white",
+        pillInactive: "bg-white text-ocre-600 border-crema-200 hover:bg-ocre-100/60",
+        pillActive: "bg-ocre-600 text-white border-ocre-600"
+      },
+      "Patrimonio Inmaterial y Alfarería": {
+        color: "#247196",
+        badgeBg: "bg-rio-600 text-white",
+        pillInactive: "bg-white text-rio-700 border-crema-200 hover:bg-rio-100/60",
+        pillActive: "bg-rio-600 text-white border-rio-600"
+      },
+      "Juegos y Tradición Oral": {
+        color: "#276a4b",
+        badgeBg: "bg-selva-700 text-white",
+        pillInactive: "bg-white text-selva-800 border-crema-200 hover:bg-selva-100/60",
+        pillActive: "bg-selva-700 text-white border-selva-700"
+      },
+      "Gobernanza y Desarrollo Local": {
+        color: "#5b3e96",
+        badgeBg: "bg-indigo-800 text-white",
+        pillInactive: "bg-white text-indigo-900 border-crema-200 hover:bg-indigo-50",
+        pillActive: "bg-indigo-800 text-white border-indigo-800"
+      }
+    };
+
+    // Base de datos georreferenciada extraída estrictamente de S15-COMPONENTE PRACTICO_2.docx
+    const CULTURAL_POINTS = [
+      {
+        id: "tena",
+        name: "Tena (Cabecera Cantonal)",
+        canton: "Cantón Tena • Capital Provincial",
+        category: "Gobernanza y Desarrollo Local",
+        secondaryCategories: ["Fiestas y Rituales", "Patrimonio Material", "Patrimonio Inmaterial y Alfarería"],
+        x: 382,
+        y: 358,
+        shortLabel: "Tena",
+        description: "Reconocida como la 'capital de la guayusa y la canela', Tena articula la celebración cívico-ritual de la Guayusa Warmi, la arquitectura tradicional adaptada al clima tropical húmedo, la alfarería inscrita en 2022 y las políticas provinciales de educación intercultural y gobernanza del PDOT.",
+        keyFacts: [
+          { label: "Fiesta Emblemática", value: "Guayusa Warmi (15 de noviembre, coincidente con la fundación de Tena)." },
+          { label: "Educación Kichwa", value: "685 participantes capacitados en cursos básico e intermedio (convenio GAD Provincial – SEIBE)." },
+          { label: "Meta PDOT 2027", value: "Incrementar de 3.542 a 5.542 participantes activos en identidad cultural." },
+          { label: "Patrimonio y Alerta", value: "Alfarería inscrita en 2022 y arquitectura tradicional; el PDOT advierte bienes destruidos/abandonados que requieren actualizar inventario." }
+        ],
+        quote: "«Guayusa Warmi: Tena, 15 de noviembre, coincidente con la fundación de Tena; Tena es reconocida como 'capital de la guayusa y la canela'.»"
+      },
+      {
+        id: "archidona",
+        name: "Archidona y Universidad Ikiam",
+        canton: "Cantón Archidona",
+        category: "Fiestas y Rituales",
+        secondaryCategories: ["Patrimonio Inmaterial y Alfarería", "Gobernanza y Desarrollo Local"],
+        x: 368,
+        y: 298,
+        shortLabel: "Archidona",
+        description: "Centro neurálgico de las festividades Kichwa amazónicas como la Fiesta de la Chonta y el Carnaval 'Capoa'. Además, sus talleres de alfarería tradicional y la articulación académica con la Universidad Regional Amazónica Ikiam lograron el reconocimiento nacional de 2022.",
+        keyFacts: [
+          { label: "Fiesta de la Chonta", value: "Abril–mayo (registro del 3 al 7 de mayo): maytu de pescado, chicha de chonta y elección de Mushuk Chonta Warmi." },
+          { label: "Carnaval", value: "Tematizado como 'Territorio Ancestral y Cultural', destacando el 'Capoa' en Archidona." },
+          { label: "Alianza Institucional", value: "Articulación entre GAD de Archidona y Tena, Universidad Ikiam y Ministerio de Cultura para la declaratoria de junio 2022." },
+          { label: "Arquitectura", value: "Vivienda y arquitectura tradicional adaptada al clima tropical húmedo." }
+        ],
+        quote: "«La alfarería fue incorporada a la lista representativa del patrimonio inmaterial en 2022 tras un proceso de varios años que involucró a los GAD municipales de Tena y Archidona, la Universidad Ikiam y el Ministerio de Cultura.»"
+      },
+      {
+        id: "talag",
+        name: "Parroquia Talag",
+        canton: "Cantón Tena • Parroquia Talag",
+        category: "Fiestas y Rituales",
+        secondaryCategories: [],
+        x: 315,
+        y: 355,
+        shortLabel: "Talag",
+        description: "Parroquia rural del cantón Tena donde se celebra el Kuya Raymi, una manifestación festiva y artesanal que pone en valor la elaboración de utensilios con kuya y visibiliza el liderazgo cultural de la mujer Kichwa.",
+        keyFacts: [
+          { label: "Fecha de Celebración", value: "14 y 15 de junio de cada año." },
+          { label: "Expresión Artesanal", value: "Elaboración de recipientes y artesanías tradicionales con kuya." },
+          { label: "Enfoque de Igualdad", value: "Elección de la Kuya Warmi, visibilizando el rol femenino en la cultura local." }
+        ],
+        quote: "«Kuya Raymi: parroquia Talag, 14–15 de junio. Elaboración de recipientes y artesanías con kuya; elección de la Kuya Warmi.»"
+      },
+      {
+        id: "puerto-napo",
+        name: "Puerto Napo",
+        canton: "Cantón Tena • Puerto Napo",
+        category: "Patrimonio Material",
+        secondaryCategories: ["Gobernanza y Desarrollo Local"],
+        x: 412,
+        y: 382,
+        shortLabel: "Puerto Napo",
+        description: "Punto estratégico sobre el río Napo donde se ejecuta la construcción del Hito Cultural de Puerto Napo mediante mecanismos de presupuesto participativo, fortaleciendo la infraestructura patrimonial de la provincia.",
+        keyFacts: [
+          { label: "Inversión Pública", value: "USD 36.472 financiados mediante presupuesto participativo." },
+          { label: "Cronograma", value: "Previsto para julio de 2026 como patrimonio material en construcción." },
+          { label: "Gobernanza", value: "Ejemplo de presupuestación participativa y rendición de cuentas del GAD Provincial." }
+        ],
+        quote: "«El hito cultural de Puerto Napo, financiado con presupuesto participativo (USD 36 472) y previsto para julio de 2026, constituye un patrimonio material en construcción.»"
+      },
+      {
+        id: "comunidades-alfareras",
+        name: "Comunidades Alfareras (Tiyuyaku, Venecia Derecha, Kachiwañuska, Ahuano y San Pedro de Muyuna)",
+        canton: "Cantones Tena y Archidona • Cuenca del Napo",
+        category: "Patrimonio Inmaterial y Alfarería",
+        secondaryCategories: ["Gobernanza y Desarrollo Local"],
+        x: 505,
+        y: 368,
+        shortLabel: "Ruta Alfarera",
+        description: "Red de cinco comunidades amazónicas donde 31 mujeres alfareras mantienen viva la cerámica ancestral Kichwa, inscrita en junio de 2022 en la Lista Representativa del Patrimonio Cultural Inmaterial del Ecuador.",
+        keyFacts: [
+          { label: "Portadoras", value: "31 alfareras de Tiyuyaku, Venecia Derecha, Kachiwañuska, Ahuano y San Pedro de Muyuna." },
+          { label: "Reconocimiento", value: "Inscrita en junio de 2022 en la Lista Representativa del PCI del Ecuador (aún pendiente de registro en SIPCE)." },
+          { label: "Impacto Económico", value: "'Renacer' impulsado por el turismo comunitario, generando ingresos directos para familias artesanas." }
+        ],
+        quote: "«La alfarería de Tena y Archidona, aunque inscrita como patrimonio inmaterial, tiene una dimensión material conformada por objetos, herramientas y talleres.»"
+      },
+      {
+        id: "wayra-yacu",
+        name: "Wayra Yacu",
+        canton: "Cantón Tena • Wayra Yacu",
+        category: "Patrimonio Inmaterial y Alfarería",
+        secondaryCategories: [],
+        x: 448,
+        y: 332,
+        shortLabel: "Wayra Yacu",
+        description: "Comunidad referente en la lutería y tradición musical amazónica, destacada en los registros del SIPCE por la fabricación artesanal del warkar (tambor tradicional) y la interpretación de música Naporuna.",
+        keyFacts: [
+          { label: "Técnica Artesanal", value: "Fabricación tradicional del warkar (tambor ancestral)." },
+          { label: "Música y Danza", value: "Música Naporuna, Mondayacu, danza de la boda y danza de la siembra." },
+          { label: "Agrupaciones", value: "Presencia de grupos musicales tradicionales como Kurikindy, Los Jilgueritos y Los Yumbos Chawamankos." }
+        ],
+        quote: "«Técnicas artesanales registradas en el SIPCE: cestería; artesanías en fibras y semillas; fabricación del warkar (tambor) en Wayra Yacu.»"
+      },
+      {
+        id: "shiwakucha",
+        name: "Shiwakucha y Tradición Oral / Lúdica Napu Runa",
+        canton: "Cantón Tena • Shiwakucha",
+        category: "Juegos y Tradición Oral",
+        secondaryCategories: [],
+        x: 348,
+        y: 392,
+        shortLabel: "Shiwakucha",
+        description: "Espacio emblemático de la tradición oral Kichwa donde se documenta el cuento del Pumarumi, junto con los relatos morales de Apústulu y 'El origen del sapo gota', y juegos tradicionales como la chaskina (sara panga).",
+        keyFacts: [
+          { label: "Tradición Oral", value: "Cuento del Pumarumi en Shiwakucha; mitos de Apústulu (pesca con llika), 'El origen del sapo gota' y 'El origen de la guatusa'." },
+          { label: "Reglas de la Chaskina", value: "Pelota de hojas secas de maíz (sara panga), equipos de 3 hombres y 3 mujeres en círculo de 3–4 m, máx. 2 golpes con una mano." },
+          { label: "Otros Juegos", value: "Pukuna (cerbatana), lanzamiento de lanza, waysapuru (trompo ancestral), volantes y 'navegando por el río'." }
+        ],
+        quote: "«Los relatos transmiten valores morales claros: generosidad, honestidad, respeto a los mayores y correcto uso de los recursos.»"
+      },
+      {
+        id: "linares",
+        name: "Parroquia Linares",
+        canton: "Cantón El Chaco • Parroquia Linares",
+        category: "Patrimonio Material",
+        secondaryCategories: ["Patrimonio Inmaterial y Alfarería", "Juegos y Tradición Oral"],
+        x: 495,
+        y: 162,
+        shortLabel: "Linares",
+        description: "Parroquia del cantón El Chaco que concentra importantes vestigios arqueológicos monumentales y rupestres de Napo, además de saberes vivos de medicina tradicional y relatos fundacionales.",
+        keyFacts: [
+          { label: "Patrimonio Arqueológico", value: "Asentamiento monumental Pamba Huasi y Petroglifo Río Cauchillo de Linares." },
+          { label: "Medicina Tradicional", value: "Atención ancestral al parto ejercida por la portadora María Collago." },
+          { label: "Tradición Oral", value: "Historia oral de la fundación de Linares registrada en el SIPCE." }
+        ],
+        quote: "«En la parroquia Linares (El Chaco) se registran el asentamiento monumental Pamba Huasi y el Petroglifo Río Cauchillo de Linares.»"
+      },
+      {
+        id: "el-chaco",
+        name: "Cabecera Cantonal de El Chaco",
+        canton: "Cantón El Chaco",
+        category: "Patrimonio Material",
+        secondaryCategories: [],
+        x: 425,
+        y: 122,
+        shortLabel: "El Chaco",
+        description: "Núcleo urbano del valle del río Quijos que conserva muestras representativas de la arquitectura y vivienda tradicional vernácula de la alta Amazonía.",
+        keyFacts: [
+          { label: "Bienes Inmuebles", value: "Vivienda tradicional registrada en las calles La Revolución y Francisco Tram." },
+          { label: "Valor Patrimonial", value: "Arquitectura adaptada a las condiciones climáticas y constructivas de la región." }
+        ],
+        quote: "«En la cabecera cantonal de El Chaco se registra vivienda tradicional en las calles La Revolución y Francisco Tram.»"
+      },
+      {
+        id: "el-bombon",
+        name: "Comunidad El Bombón",
+        canton: "Provincia de Napo • El Bombón",
+        category: "Patrimonio Inmaterial y Alfarería",
+        secondaryCategories: [],
+        x: 325,
+        y: 225,
+        shortLabel: "El Bombón",
+        description: "Localidad reconocida en el inventario patrimonial por la vigencia de la medicina ancestral amazónica especializada en el tratamiento traumatológico tradicional.",
+        keyFacts: [
+          { label: "Práctica Médica", value: "Curación tradicional de golpes y torceduras mediante saberes botánicos y terapéuticos." },
+          { label: "Portador Reconocido", value: "Juan Manuel Collago (registrado en el ámbito de medicina tradicional)." }
+        ],
+        quote: "«Medicina tradicional: curación de golpes y torceduras en El Bombón (portador: Juan Manuel Collago).»"
+      },
+      {
+        id: "territorio-multinacional",
+        name: "Territorio Multinacional (Kichwa, Waorani y Quijos)",
+        canton: "Toda la Provincia de Napo (Incl. Quijos y C.J. Arosemena Tola)",
+        category: "Gobernanza y Desarrollo Local",
+        secondaryCategories: ["Patrimonio Inmaterial y Alfarería"],
+        x: 585,
+        y: 412,
+        shortLabel: "Territorio Vivo",
+        description: "Napo es un territorio pluricultural habitado por las nacionalidades Kichwa, Waorani y Quijos, donde la chakra ancestral, los ríos y los sitios sagrados integran identidad, soberanía alimentaria y desarrollo turístico.",
+        keyFacts: [
+          { label: "Nacionalidades", value: "Convivencia de pueblos Kichwa (Napu Runa), Waorani y Quijos con sus propias cosmovisiones." },
+          { label: "Chakra Ancestral", value: "Sistema agroforestal protegido mediante proyectos de soberanía alimentaria y conservación." },
+          { label: "Identidad y Turismo", value: "Memoria histórica de Jumandi y Plan de Desarrollo Turístico Provincial 2022–2027." }
+        ],
+        quote: "«El territorio no es solo espacio físico: la chakra ancestral, los ríos y los sitios sagrados son parte del patrimonio cultural.»"
+      }
+    ];
+
+    // Estado de la aplicación
+    let activeCategory = "Todos";
+    let searchQuery = "";
+    let selectedPointId = "tena";
+
+    // Estado de Transformación (Zoom y Paneo del SVG)
+    let zoomScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    // Referencias del DOM
+    const categoryFilterBar = document.getElementById("categoryFilterBar");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const markersLayer = document.getElementById("markersLayer");
+    const legendItems = document.getElementById("legendItems");
+    const quickPointList = document.getElementById("quickPointList");
+    const detailPanel = document.getElementById("detailPanel");
+    const visibleCountBadge = document.getElementById("visibleCountBadge");
+    const mapViewport = document.getElementById("mapViewport");
+    const mapTransformGroup = document.getElementById("mapTransformGroup");
+
+    // Obtener puntos filtrados
+    function getFilteredPoints() {
+      const q = searchQuery.trim().toLowerCase();
+      return CULTURAL_POINTS.filter(pt => {
+        const matchesCategory =
+          activeCategory === "Todos" ||
+          pt.category === activeCategory ||
+          (pt.secondaryCategories && pt.secondaryCategories.includes(activeCategory));
+
+        const searchable = [
+          pt.name,
+          pt.canton,
+          pt.category,
+          pt.description,
+          ...pt.keyFacts.map(f => `${f.label} ${f.value}`)
+        ].join(" ").toLowerCase();
+
+        const matchesSearch = !q || searchable.includes(q);
+        return matchesCategory && matchesSearch;
+      });
+    }
+
+    // Renderizar barra de categorías
+    function renderCategoryBar() {
+      categoryFilterBar.innerHTML = Object.keys(CATEGORIES).map(cat => {
+        const isActive = activeCategory === cat;
+        const styleClass = isActive ? CATEGORIES[cat].pillActive : CATEGORIES[cat].pillInactive;
+        return `
+          <button
+            data-cat="${cat}"
+            class="cat-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${styleClass}"
+          >
+            ${cat}
+          </button>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".cat-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.getAttribute("data-cat");
+          renderCategoryBar();
+          updateApp();
+        });
+      });
+    }
+
+    // Renderizar leyenda del mapa
+    function renderLegend() {
+      const cats = Object.keys(CATEGORIES).filter(c => c !== "Todos");
+      legendItems.innerHTML = cats.map(cat => `
+        <button data-legend-cat="${cat}" class="legend-btn inline-flex items-center gap-1.5 hover:opacity-80 transition cursor-pointer">
+          <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: ${CATEGORIES[cat].color}"></span>
+          <span class="text-[11px] font-medium text-gray-700">${cat}</span>
+        </button>
+      `).join("");
+
+      document.querySelectorAll(".legend-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const clickedCat = btn.getAttribute("data-legend-cat");
+          activeCategory = activeCategory === clickedCat ? "Todos" : clickedCat;
+          renderCategoryBar();
+          updateApp();
+        });
+      });
+    }
+
+    // Renderizar marcadores en el SVG
+    function renderMarkers(filteredPoints) {
+      markersLayer.innerHTML = filteredPoints.map(pt => {
+        const isSelected = pt.id === selectedPointId;
+        const catColor = CATEGORIES[pt.category]?.color || "#123524";
+        const radius = isSelected ? 11 : 8.5;
+
+        return `
+          <g
+            class="marker-group"
+            data-point-id="${pt.id}"
+            transform="translate(${pt.x}, ${pt.y})"
+            role="button"
+            tabindex="0"
+            aria-label="${pt.name} - ${pt.category}"
+          >
+            <!-- Halo pulsante si está seleccionado -->
+            ${isSelected ? `
+              <circle r="15" fill="${catColor}" class="marker-pulse"></circle>
+              <circle r="16" fill="none" stroke="${catColor}" stroke-width="1.5" stroke-dasharray="3 2"></circle>
+            ` : `
+              <circle r="12" fill="${catColor}" opacity="0.18"></circle>
+            `}
+
+            <!-- Núcleo del marcador -->
+            <circle
+              class="marker-core"
+              r="${radius}"
+              fill="${catColor}"
+              stroke="#ffffff"
+              stroke-width="${isSelected ? 3 : 2.2}"
+            ></circle>
+
+            <!-- Punto interior blanco -->
+            <circle r="2.8" fill="#ffffff"></circle>
+
+            <!-- Etiqueta flotante legible -->
+            <g transform="translate(0, ${isSelected ? -18 : -14})">
+              <rect
+                x="${-(pt.shortLabel.length * 3.4 + 8)}"
+                y="-11"
+                width="${pt.shortLabel.length * 6.8 + 16}"
+                height="16"
+                rx="6"
+                fill="${isSelected ? '#123524' : 'rgba(255,255,255,0.92)'}"
+                stroke="${isSelected ? '#eab64d' : '#d6ccb8'}"
+                stroke-width="1"
+              ></rect>
+              <text
+                y="0.5"
+                text-anchor="middle"
+                font-size="9.5"
+                font-weight="700"
+                fill="${isSelected ? '#ffffff' : '#123524'}"
+              >
+                ${pt.shortLabel}
+              </text>
+            </g>
+          </g>
+        `;
+      }).join("");
+
+      // Eventos en marcadores SVG
+      document.querySelectorAll(".marker-group").forEach(el => {
+        const selectHandler = (e) => {
+          e.stopPropagation();
+          const id = el.getAttribute("data-point-id");
+          selectPoint(id, false);
+        };
+        el.addEventListener("click", selectHandler);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectHandler(e);
+          }
+        });
+      });
+    }
+
+    // Renderizar lista rápida debajo del mapa
+    function renderQuickList(filteredPoints) {
+      if (filteredPoints.length === 0) {
+        quickPointList.innerHTML = `
+          <div class="col-span-full text-center py-4 text-xs text-gray-500">
+            No hay puntos que coincidan con el filtro actual.
+          </div>
+        `;
+        return;
+      }
+
+      quickPointList.innerHTML = filteredPoints.map(pt => {
+        const isSelected = pt.id === selectedPointId;
+        const catColor = CATEGORIES[pt.category]?.color || "#123524";
+        return `
+          <button
+            data-list-id="${pt.id}"
+            class="quick-pt-btn text-left px-3 py-2 rounded-xl border transition flex items-center gap-2.5 cursor-pointer ${
+              isSelected
+                ? "bg-selva-900 text-white border-selva-900 shadow-xs"
+                : "bg-crema-50 hover:bg-crema-100 text-selva-950 border-crema-200"
+            }"
+          >
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${catColor}; border: 1.5px solid white;"></span>
+            <div class="min-w-0 flex-1">
+              <p class="text-xs font-bold truncate">${pt.shortLabel}</p>
+              <p class="text-[10px] truncate ${isSelected ? 'text-selva-100' : 'text-gray-500'}">${pt.category}</p>
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".quick-pt-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-list-id");
+          selectPoint(id, true);
+        });
+      });
+    }
+
+    // Renderizar Panel Lateral de Detalle Dinámico
+    function renderDetailPanel(filteredPoints) {
+      if (filteredPoints.length === 0) {
+        detailPanel.innerHTML = `
+          <div class="p-8 text-center">
+            <p class="font-serif text-lg font-bold text-selva-900">Sin resultados en el mapa</p>
+            <p class="text-xs text-gray-600 mt-2">Prueba restablecer los filtros o buscar otro término del informe (ej. Chonta, Linares, Alfarería).</p>
+            <button id="panelResetBtn" class="mt-4 px-4 py-2 bg-selva-800 text-white text-xs font-semibold rounded-xl hover:bg-selva-900 transition">
+              Restablecer filtros
+            </button>
+          </div>
+        `;
+        document.getElementById("panelResetBtn")?.addEventListener("click", () => {
+          activeCategory = "Todos";
+          searchQuery = "";
+          searchInput.value = "";
+          clearSearchBtn.classList.add("hidden");
+          renderCategoryBar();
+          updateApp();
+        });
+        return;
+      }
+
+      // Asegurar que selectedPointId esté dentro de los filtrados
+      let currentIdx = filteredPoints.findIndex(p => p.id === selectedPointId);
+      if (currentIdx === -1) {
+        currentIdx = 0;
+        selectedPointId = filteredPoints[0].id;
+      }
+
+      const pt = filteredPoints[currentIdx];
+      const badgeClass = CATEGORIES[pt.category]?.badgeBg || "bg-selva-800 text-white";
+
+      detailPanel.innerHTML = `
+        <div class="fade-in flex flex-col">
+          <!-- Cabecera del Panel -->
+          <div class="bg-selva-900 text-white px-5 py-5 border-b-4 border-ocre-500">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${badgeClass}">
+                ${pt.category}
+              </span>
+              <span class="text-xs font-mono text-ocre-400 font-semibold">
+                Punto ${currentIdx + 1} de ${filteredPoints.length}
+              </span>
+            </div>
+            <h2 class="font-serif text-xl sm:text-2xl font-bold leading-snug text-white">
+              ${pt.name}
+            </h2>
+            <p class="text-xs text-selva-100 mt-1 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-ocre-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span>${pt.canton}</span>
+            </p>
+          </div>
+
+          <!-- Cuerpo con datos exactos del documento -->
+          <div class="p-5 space-y-4 text-sm">
+            <div>
+              <h3 class="text-[11px] font-bold uppercase tracking-wider text-selva-800 mb-1">Síntesis Territorial y Patrimonial</h3>
+              <p class="text-gray-800 text-xs sm:text-sm leading-relaxed">
+                ${pt.description}
+              </p>
+            </div>
+
+            <!-- Ficha de Datos Clave -->
+            <div class="space-y-2">
+              <h3 class="text-[11px] font-bold uppercase tracking-wider text-terracota-700">Datos Verificados del Informe UNEMI</h3>
+              <div class="space-y-2">
+                ${pt.keyFacts.map(fact => `
+                  <div class="bg-crema-50 p-3 rounded-xl border border-crema-200">
+                    <span class="text-[11px] font-bold text-selva-900 block">${fact.label}</span>
+                    <span class="text-xs text-gray-700 leading-snug block mt-0.5">${fact.value}</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <!-- Cita Textual del Informe -->
+            <blockquote class="border-l-4 border-terracota-600 bg-terracota-100/45 p-3.5 rounded-r-xl text-xs italic text-selva-950 leading-relaxed">
+              ${pt.quote}
+            </blockquote>
+
+            <!-- Botón de Enfoque en el Mapa -->
+            <button
+              id="focusOnMapBtn"
+              class="w-full py-2.5 px-4 rounded-xl bg-rio-700 hover:bg-rio-600 text-white text-xs font-semibold transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+              </svg>
+              Centrar y acercar ubicación en el mapa
+            </button>
+          </div>
+
+          <!-- Navegación Anterior / Siguiente -->
+          <div class="px-5 py-3.5 bg-crema-100 border-t border-crema-200 flex items-center justify-between gap-2">
+            <button
+              id="prevPointBtn"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-crema-200 hover:bg-crema-50 text-selva-900 text-xs font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              ${currentIdx === 0 ? "disabled" : ""}
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              Anterior
+            </button>
+
+            <button
+              id="nextPointBtn"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-selva-800 hover:bg-selva-900 text-white text-xs font-semibold transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              ${currentIdx === filteredPoints.length - 1 ? "disabled" : ""}
+            >
+              Siguiente
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Eventos del panel lateral
+      document.getElementById("focusOnMapBtn")?.addEventListener("click", () => {
+        focusPointOnSvg(pt);
+      });
+
+      document.getElementById("prevPointBtn")?.addEventListener("click", () => {
+        if (currentIdx > 0) {
+          selectPoint(filteredPoints[currentIdx - 1].id, true);
+        }
+      });
+
+      document.getElementById("nextPointBtn")?.addEventListener("click", () => {
+        if (currentIdx < filteredPoints.length - 1) {
+          selectPoint(filteredPoints[currentIdx + 1].id, true);
+        }
+      });
+    }
+
+    // Seleccionar punto y actualizar componentes
+    function selectPoint(pointId, shouldCenter = false) {
+      selectedPointId = pointId;
+      updateApp();
+      if (shouldCenter) {
+        const pt = CULTURAL_POINTS.find(p => p.id === pointId);
+        if (pt) focusPointOnSvg(pt);
+      }
+    }
+
+    // Centrar y hacer zoom suave sobre un punto específico del SVG
+    function focusPointOnSvg(pt) {
+      zoomScale = 1.65;
+      const centerX = 400;
+      const centerY = 290;
+      panX = centerX - pt.x * zoomScale;
+      panY = centerY - pt.y * zoomScale;
+      applySvgTransform();
+    }
+
+    // Aplicar transformación SVG
+    function applySvgTransform() {
+      // Limitar rango de zoom
+      zoomScale = Math.max(0.85, Math.min(2.8, zoomScale));
+      mapTransformGroup.setAttribute(
+        "transform",
+        `translate(${panX.toFixed(1)}, ${panY.toFixed(1)}) scale(${zoomScale.toFixed(2)})`
+      );
+    }
+
+    // Actualizar toda la vista
+    function updateApp() {
+      const filtered = getFilteredPoints();
+      visibleCountBadge.textContent = `${filtered.length} ${filtered.length === 1 ? 'nodo georreferenciado' : 'nodos georreferenciados'}`;
+      renderDetailPanel(filtered);
+      renderMarkers(filtered);
+      renderQuickList(filtered);
+    }
+
+    // Controles de Zoom y Paneo Interactivo
+    document.getElementById("zoomInBtn").addEventListener("click", () => {
+      const oldScale = zoomScale;
+      zoomScale = Math.min(2.8, zoomScale + 0.25);
+      const factor = zoomScale / oldScale;
+      panX = 400 - (400 - panX) * factor;
+      panY = 290 - (290 - panY) * factor;
+      applySvgTransform();
+    });
+
+    document.getElementById("zoomOutBtn").addEventListener("click", () => {
+      const oldScale = zoomScale;
+      zoomScale = Math.max(0.85, zoomScale - 0.25);
+      const factor = zoomScale / oldScale;
+      panX = 400 - (400 - panX) * factor;
+      panY = 290 - (290 - panY) * factor;
+      applySvgTransform();
+    });
+
+    document.getElementById("resetZoomBtn").addEventListener("click", () => {
+      zoomScale = 1;
+      panX = 0;
+      panY = 0;
+      applySvgTransform();
+    });
+
+    // Zoom con rueda del ratón
+    mapViewport.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const oldScale = zoomScale;
+      const delta = e.deltaY < 0 ? 0.15 : -0.15;
+      zoomScale = Math.max(0.85, Math.min(2.8, zoomScale + delta));
+      const factor = zoomScale / oldScale;
+      panX = 400 - (400 - panX) * factor;
+      panY = 290 - (290 - panY) * factor;
+      applySvgTransform();
+    }, { passive: false });
+
+    // Arrastre (Pan) con mouse y táctil
+    mapViewport.addEventListener("mousedown", (e) => {
+      if (e.target.closest(".marker-group")) return;
+      isDragging = true;
+      dragStartX = e.clientX - panX;
+      dragStartY = e.clientY - panY;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      panX = e.clientX - dragStartX;
+      panY = e.clientY - dragStartY;
+      applySvgTransform();
+    });
+
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    // Soporte táctil para paneo en móviles
+    mapViewport.addEventListener("touchstart", (e) => {
+      if (e.target.closest(".marker-group") || e.touches.length !== 1) return;
+      isDragging = true;
+      dragStartX = e.touches[0].clientX - panX;
+      dragStartY = e.touches[0].clientY - panY;
+    }, { passive: true });
+
+    mapViewport.addEventListener("touchmove", (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      panX = e.touches[0].clientX - dragStartX;
+      panY = e.touches[0].clientY - dragStartY;
+      applySvgTransform();
+    }, { passive: true });
+
+    mapViewport.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    // Eventos del buscador
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      clearSearchBtn.classList.toggle("hidden", !searchQuery);
+      updateApp();
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchQuery = "";
+      searchInput.value = "";
+      clearSearchBtn.classList.add("hidden");
+      updateApp();
+    });
+
+    // Inicialización
+    renderCategoryBar();
+    renderLegend();
+    updateApp();
+  </script>
+</body>
+</html>
