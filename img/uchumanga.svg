@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice">
+<rect width="900" height="600" fill="#fdf6ec"/><g fill="#2d6a4f" opacity=".9"><path d="M0 0h260c-60 40-150 60-260 40z"/><path d="M900 0H640c60 40 150 60 260 40z" fill="#52796f"/><path d="M0 600h220c-50-40-130-60-220-30z" fill="#52796f"/><path d="M900 600H690c50-40 130-60 210-30z"/></g>
+<ellipse cx="450" cy="480" rx="230" ry="42" fill="#1b4332" opacity=".18"/>
+<path d="M220 300h460c0 110-80 170-230 170S220 410 220 300z" fill="#7a4a21"/><ellipse cx="450" cy="300" rx="230" ry="50" fill="#5b3414"/><ellipse cx="450" cy="300" rx="208" ry="38" fill="#d62828"/><ellipse cx="450" cy="296" rx="180" ry="26" fill="#e76f51" opacity=".8"/>
+<g fill="#d62828" stroke="#9c1c1c" stroke-width="3"><path d="M200 210q80-50 150-10q-60 40-150 10z"/><path d="M560 190q70-40 140 0q-60 40-140 0z"/></g>
+<g fill="#2d6a4f"><path d="M340 200l30-24 8 26z"/><path d="M690 190l30-24 8 26z"/></g>
+<g fill="#e9c46a" stroke="#c98a3a" stroke-width="3"><circle cx="540" cy="285" r="14"/><circle cx="380" cy="300" r="12"/><rect x="440" y="276" width="34" height="14" rx="7"/></g>
+<g fill="#f4a261"><path d="M170 420q40-50 90-30-10 50-90 30z"/><path d="M640 420q50-40 90 0-40 40-90 0z"/></g>
+<text x="450" y="574" font-family="Fredoka,Nunito,sans-serif" font-size="30" fill="#1b4332" text-anchor="middle" font-weight="600">Uchumanga (salsa de ají amazónico)</text></svg>

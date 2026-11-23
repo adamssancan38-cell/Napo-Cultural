@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fdf6ec"/><stop offset="1" stop-color="#f4e3c4"/></linearGradient>
+<radialGradient id="em" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffb347"/><stop offset=".6" stop-color="#e76f51"/><stop offset="1" stop-color="#9c4221"/></radialGradient></defs>
+<rect width="900" height="600" fill="url(#bg)"/><g fill="#2d6a4f" opacity=".9"><path d="M0 0h260c-60 40-150 60-260 40z"/><path d="M900 0H640c60 40 150 60 260 40z" fill="#52796f"/><path d="M0 600h220c-50-40-130-60-220-30z" fill="#52796f"/><path d="M900 600H690c50-40 130-60 210-30z"/></g>
+<ellipse cx="450" cy="440" rx="300" ry="62" fill="#1b4332" opacity=".18"/>
+<path d="M170 430c90-110 470-110 560 0-90 60-470 60-560 0z" fill="#3f8f5f"/><path d="M450 330v150M330 345l50 120M570 345l-50 120" stroke="#2d6a4f" stroke-width="5" fill="none"/>
+<g stroke="#7a4a21" stroke-width="9" stroke-linecap="round"><line x1="170" y1="250" x2="730" y2="330"/><line x1="170" y1="300" x2="730" y2="380"/></g>
+<g fill="#f3d9a0" stroke="#c98a3a" stroke-width="4">
+<rect x="250" y="230" width="90" height="42" rx="21" transform="rotate(8 295 251)"/><rect x="355" y="242" width="90" height="42" rx="21" transform="rotate(8 400 263)"/><rect x="460" y="255" width="90" height="42" rx="21" transform="rotate(8 505 276)"/><rect x="565" y="268" width="90" height="42" rx="21" transform="rotate(8 610 289)"/>
+<rect x="250" y="290" width="90" height="42" rx="21" transform="rotate(8 295 311)"/><rect x="355" y="302" width="90" height="42" rx="21" transform="rotate(8 400 323)"/><rect x="460" y="315" width="90" height="42" rx="21" transform="rotate(8 505 336)"/><rect x="565" y="328" width="90" height="42" rx="21" transform="rotate(8 610 349)"/></g>
+<g stroke="#c98a3a" stroke-width="3" opacity=".7"><path d="M275 240v26M300 243v26M325 246v26M380 252v26M405 255v26M430 258v26M485 265v26M510 268v26M535 271v26M590 278v26M615 281v26M640 284v26"/></g>
+<g stroke="#bdbdbd" stroke-width="6" fill="none" stroke-linecap="round" opacity=".6"><path d="M330 190c-20-25 20-40 0-65"/><path d="M450 180c-20-25 20-40 0-65"/><path d="M570 190c-20-25 20-40 0-65"/></g>
+<ellipse cx="450" cy="520" rx="210" ry="26" fill="url(#em)" opacity=".85"/>
+<text x="450" y="574" font-family="Fredoka,Nunito,sans-serif" font-size="30" fill="#1b4332" text-anchor="middle" font-weight="600">Chontacuro asado</text></svg>
