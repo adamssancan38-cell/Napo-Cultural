@@ -434,8 +434,6 @@
 .parte-chip{display:inline-block;background:var(--terracota);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .6rem;border-radius:999px;vertical-align:middle;margin-right:.5rem;}
 .parte-titulo{color:var(--verde-selva);font-size:1.5rem;margin:3rem 0 1rem;}
 .nota-interactivo{text-align:center;margin-top:1rem;}
-.audio-wrapper{max-width:640px;margin:1.5rem auto 0;background:#fff;border-radius:16px;padding:1rem 1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.1);}
-.audio-wrapper audio{width:100%;display:block;}
 .mensaje-video-extra{display:none;background:#fff3e0;color:#7a4300;padding:1rem 1.3rem;border-radius:12px;margin:1rem auto 0;font-weight:700;text-align:center;border:1px dashed var(--terracota);max-width:880px;}
 @media (min-width:921px){
   nav#menu-links{gap:.2rem .5rem;flex-wrap:wrap;justify-content:flex-end;}

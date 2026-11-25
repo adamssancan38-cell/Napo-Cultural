@@ -429,3 +429,16 @@ document.addEventListener('error', (e)=>{
   if(src) src.addEventListener('error', ()=> m.style.display = 'block');
   v.addEventListener('error', ()=> m.style.display = 'block');
 })();
+
+
+/* ======================================================
+   VIDEO DEL PODCAST: mensaje si no se encuentra video/podcast-napo.mp4
+   ====================================================== */
+(function(){
+  const v = document.getElementById('video-podcast');
+  const m = document.getElementById('mensaje-video-podcast');
+  if(!v || !m) return;
+  const src = v.querySelector('source');
+  if(src) src.addEventListener('error', ()=> m.style.display = 'block');
+  v.addEventListener('error', ()=> m.style.display = 'block');
+})();

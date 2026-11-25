@@ -8,7 +8,7 @@ napo-cultural-heritage-portal/
 ├── img/              (infografía, logos y las ilustraciones/fotos de cada sección)
 ├── video/napo.mp4    (video del grupo)
 ├── video/napo-2.mp4  (segundo video del grupo, 720p comprimido)
-├── audio/audio-napo.m4a (audio del proyecto)
+├── video/podcast-napo.mp4 (podcast en video, 720p comprimido)
 ├── js/interactivos.js (mapa cultural y línea de tiempo "Memoria viva", integrados de forma nativa)
 ├── referencia/       (los dos HTML originales independientes, solo como referencia)
 └── flashcards.csv    (tarjetas del quiz)
